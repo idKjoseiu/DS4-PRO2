@@ -13,56 +13,104 @@
 
     <!-- Bootstrap/ css -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    
 
     <link rel="stylesheet" href="CSS/style.css">
 </head>
 <body>
-    <div class ="flex gap-[2%] flex-wrap content-start flex-row">
-
-        <!-- Este div actúa como un espaciador superior invisible -->
-        <div class="w-full h-[60px]"></div>
-        <!-- MENU DE NAVEGACIÓN LATERAL -->
-        <div class ="menu" >
+   <!--Encabezado superior fijo -->
+    <header class="encabezado">
+        <button id="menu-toggle" class="btn">
+            <span class="material-icons">menu</span>
+        </button>
+        <h4>Lavado de dinero</h4>
+    </header>
+    
+    <!-- Contenedor principal que incluye el menú y el contenido -->
+    <div class="contenido-principal">
+        <!-- Menú lateral (ahora fuera del flujo normal) -->
+        <aside id="menu-lateral" class="menu">
             <nav>
-                <a class ="opciones" href="pantalla1.jsp"> <span class="material-icons">account_balance</span> 
-                Conciliación Bancaria 
-                </a>
-                
-                <a class ="opciones" href="cheques.jsp">  <span class ="material-icons">attach_money</span>
-                Cheques
-                </a>
+                <a class="opciones" href="index.html"> <span class="material-icons"> home </span> Inicio </a>
+                <a class="opciones" href="pantalla1.jsp"> <span class="material-icons">account_balance</span> Conciliación Bancaria </a>
+                <a class="opciones" href="cheques.jsp">  <span class="material-icons">attach_money</span> Cheques </a>
 
-                <!-- Botón de Modo Oscuro -->
-                <div class="dark-mode-toggle">
+                <a class="opciones" href="proveedores.jsp">  <span class="material-icons">group</span> Proveedores </a>
+
+                <button class="dark-mode" id="darkMode">
                     <span class="material-icons">dark_mode</span>
-                </div>
+                </button>
             </nav>
-        </div>
+        </aside>
+        
+        <!-- Contenido principal -->
+        <main id="main-content" class="main-contenido-principal">
+            <div class="contenedor">
+                <div class="headC">Gestión de Cheques</div>
+                <hr>
+                <%-- formulario de cheque --%>
+                <form action="" class="formulario">
+                    <!-- Primera fila: Número de Cheque y Fecha -->
+                    <div class="row mb-3">
+                        <div class="col-md-3">
+                            <label for="NummeroCheque" class="form-label">Número de Cheque</label>
+                            <input id="NummeroCheque" name="NummeroCheque" type="text" class="" readonly>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="fechaEmision" class="form-label">Fecha de Emisión</label>
+                            <input id="fechaEmision" name="fechaEmision" type="date" class="">
+                        </div>
+                        <div class="col-md-3">
+                            <label for="proveedor" class="form-label">Proveedor</label>
+                            <select id="proveedor" name="proveedor" class="form-select mb-3" style ="height: 58px;">
+                                <option value="" disabled selected>Seleccione un proveedor</option>
+                                <%-- Aquí se cargarían los proveedores desde la base de datos --%>
+                                <option value="1">Proveedor Ejemplo 1</option>
+                                <option value="2">Proveedor Ejemplo 2</option>
+                         </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="objetoDeGasto"Objeto de Gasto class="form-label">Objeto de Gasto</label>
+                            <select id="objetoDeGasto" name="objetoDeGasto" class="form-select mb-3" style ="height: 58px;">
+                                <option value="" disabled selected>Opciones</option>
+                                <%-- Aquí se cargarían los proveedores desde la base de datos --%>
+                                <option value="1">Proveedor Ejemplo 1</option>
+                         </select>
+                        </div>
+                    </div>
+
+                    <%-- Fila 2: Detalles y Monto --%>
+                    <div class="row mb-3">
+                        <div class ="col-md-3">
+                            <label for=detalles class="form-label">Detalles</label>
+                            <input id="detalles" name="detalles" class=""></input>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label for="monto" class="form-label">Monto</label>
+                            <input id="monto" name="monto" type="number" class="" placeholder="Ingrese el monto">
+                        </div>
+                        
+                        <div class="col-md-3">
+                            <label for="montoAletras" class="form-label">Monto a letras</label>
+                            
+                            <input id="montoAletras" name="montoAletras" type="text" class="" readonly></input>
+                        </div>
+                        
+                        
+                        
+                        
+                    </div>
+                    
+
+                    
+                    <button type="submit" class="btn btn-success">Generar Cheque</button>
+                </form>
+            </div>
+        </main>
     </div>
-
-    <script>
-        const darkModeToggle = document.querySelector('.dark-mode-toggle');
-        const body = document.body;
-
-        // Función para aplicar el modo guardado
-        const applyDarkMode = () => {
-            if (localStorage.getItem('darkMode') === 'enabled') {
-                body.classList.add('dark-mode');
-                darkModeToggle.querySelector('.material-icons').textContent = 'light_mode';
-            }
-        };
-
-        darkModeToggle.addEventListener('click', () => {
-            body.classList.toggle('dark-mode');
-            const isDarkMode = body.classList.contains('dark-mode');
-            localStorage.setItem('darkMode', isDarkMode ? 'enabled' : 'disabled');
-            darkModeToggle.querySelector('.material-icons').textContent = isDarkMode ? 'light_mode' : 'dark_mode';
-        });
-
-        // Aplicar el modo oscuro al cargar la página
-        applyDarkMode();
-    </script>
+    
+    <!-- Script para la funcionalidad del menú (hamburguesa) -->
+    <script src="js/main.js"></script>
 </body>
 </html>

@@ -20,43 +20,60 @@ body {
 .contenido-principal {
     display: flex;
 }
-
-/* MENU DE NAVEGACIÓN LATERAL */ 
+/*---------------------------------------------------------------------------------*/
+/* MENU DE NAVEGACIÓN LATERAL */
 .menu {
   width: 250px; 
-  background-color: rgb(225, 11, 11);
+  background-color: whitesmoke;
+  border-radius: 20px;
   padding: 20px 10px;
-  transition: transform 0.3s ease, margin-left 0.3s ease; /* Transición suave */
-  position: fixed; /* Lo sacamos del flujo normal */
+  transition: transform 0.3s ease, margin-left 0.3s ease;
+  position: fixed;
   left: 0;
-  top: 56px; /* Lo posicionamos debajo del encabezado */
+  top: 56px;
+  /* Añadido para evitar saltos de línea inesperados en botones largos */
+  word-wrap: break-word;
+  overflow: hidden; /* Mantiene el contenido dentro del botón */
+}
+
+/* Estilos para el botón de menú */
+#menu-toggle {
+    background-color: transparent;
+    border: none;
+    color: #606060;
+}
+
+#menu-toggle:hover {
+    background-color: #eee;
+    border-radius: 50%;
 }
 
 .menu.menu-hidden {
-  transform: translateX(-100%); /* Oculta el menú moviéndolo a la izquierda */
+  transform: translateX(-100%);
 }
 
 .opciones {
-  font-size: 18px; /* Ligeramente más grande */
+  font-size: 18px;
   background-color: transparent;
   border: none;
   padding: 10px;
   color: black;
   display: flex;
-  align-items: center; /* Para alinear el ícono y el texto */
+  align-items: center;
   position: relative;
-  gap: 10px; /* Más espacio entre ícono y texto */
+  gap: 10px;
   cursor: pointer;
   border-radius: 10px;
-  transition: 1s;
+  transition: all 0.3s ease; /* Cambio de transición más suave */
   box-sizing: border-box;
-  text-decoration: none; /* Para quitar el subrayado de los enlaces */
+  text-decoration: none;
+  white-space: nowrap; /* Evita que el texto haga salto de línea al hacer click */
+  overflow: hidden;    /* Evita desbordes de texto */
+  text-overflow: ellipsis; /* Añade "..." si es muy largo */
 }
 
 .opciones:not(:active):hover,
 .opciones:focus {
-  display: flex;
-  box-sizing: border-box;
   border: 2px solid #1a1f24;
   color: #637185;
 }
@@ -64,8 +81,11 @@ body {
 .opciones:focus,
 .opciones:active {
   background-color: #1a1f24;
+  color: white; /* Texto más visible sobre fondo oscuro */
   outline: none;
   margin-left: 17px;
+  /* Eliminado salto de línea */
+  white-space: nowrap;
 }
 
 .opciones::before {
@@ -75,15 +95,21 @@ body {
   left: -15px;
   width: 5px;
   height: 80%;
-  background-color: #2f81f7;
+  background-color: #dfe3e8;
   border-radius: 5px;
   opacity: 0;
-  transition: 1s;
+  transition: 0.3s;
 }
 
 .opciones:focus::before,
 .opciones:active::before {
   opacity: 1;
+}
+
+/* ESTADO ACTIVO - opción de menú actualmente seleccionada */
+.opciones.active {
+  background-color: #1a1f24;
+  color: white;
 }
 
 .menu:hover > nav > :not(.opciones:hover) {
@@ -118,7 +144,7 @@ body {
 .main-contenido-principal.content-expanded {
     margin-left: 0;
 }
-
+/*---------------------------------------------------------------------------------*/
 .headC{
     text-align: center;
     font-weight: 900;
@@ -128,28 +154,101 @@ body {
 }
 
 .formulario{
-    margin-top: 1px;
+    margin-top: 20px; /* Aumentado para una mejor separación visual */
 }
 
-.formulario .input{
+/*estilo del formulario de cheques*/
+.formulario input{
     width: 100%;
     background: white;
     border: none;
     padding: 15px 20px;
-    border-radius: 20px;
-    margin-top: 15px;
-    box-shadow: #cff0ff 0px 10px 10px -5px;
-    border-inline: 2px solid transparent;
+    border-radius: 8px; 
+    margin-bottom: 10px; /* seoara los inputs*/
+    border: 2px solid #dfe3e8;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Estilos para el botón de menú */
-#menu-toggle {
-    background-color: transparent;
-    border: none;
-    color: #606060;
+.formulario input:hover{
+    border-color: #353232; /* Un azul más claro para el hover */
 }
 
-#menu-toggle:hover {
-    background-color: #eee;
-    border-radius: 50%;
+.formulario input:focus {
+    outline: none;
+    border-color: #adddf5;
+    
 }
+/*---------------------------------------------------------------------------------*/
+/* inpurts de las tablas de solo lectura
+   Estilo para los campos de solo lectura dentro de las tablas.*/
+table .inputEnTabla {
+  font-family: inherit;
+  width: 95%;
+  border: none;
+  /*border-bottom: 2px solid #9b9b9b;*/
+  outline: 0;
+  font-size: 1rem;
+  color: #333;
+  padding: 7px 5px;
+  background: transparent;
+  transition: border-color 0.2s;
+  border-radius: 0;
+  box-shadow: none;
+  font-weight: bold;
+}
+
+/* Estilo al enfocar el input*/
+table .inputEnTabla:focus {
+  padding-bottom: 6px;
+  /*font-weight: 700;*/
+  border-width: 3px;
+  border-image: linear-gradient(to right, #116399, #38caef);
+  border-image-slice: 0;
+
+}
+
+
+table .inputEnTabla:required, table .inputEnTabla:invalid {
+  box-shadow: none;
+}
+
+/* Estilos para la tabla de conciliación */
+.tabla-conciliacion {
+    border: 1px solid #dee2e6; /* Borde exterior sutil */
+    border-collapse: separate; /* Permite redondear esquinas */
+    border-spacing: 0;
+    border-radius: 8px;
+    overflow: hidden; /* Asegura que el contenido respete el borde redondeado */
+}
+
+.tabla-conciliacion td {
+    padding: 0.75rem;
+    border: none; /* Quitamos los bordes internos */
+    border-bottom: 1px solid #f1f1f1; /* Línea separadora de filas muy sutil */
+}
+
+.tabla-conciliacion tr:last-child td {
+    border-bottom: none; /* La última fila no necesita separador */
+}
+
+/* Filas de título y total para destacarlas */
+.tabla-conciliacion .fila-titulo,
+.tabla-conciliacion .fila-total {
+    background-color: #faf9f8; /* Un gris muy claro */
+    font-weight: bold;
+    color: #212529;
+}
+
+/* Estilos para botones con íconos ---------------------------------------------------------------------*/
+.btn .material-icons {
+    font-size: 1.5rem; /* Aumenta el tamaño del ícono */
+    transition: transform 0.2s ease-in-out; /* Transición suave para el ícono */
+}
+
+/* Efecto llamativo al pasar el cursor sobre el botón */
+.btn:hover .material-icons {
+    transform: scale(1.2) rotate(-10deg); /* Agranda y rota ligeramente el ícono */
+}
+
+
+/*---------------------------------------------------------------------------------*/

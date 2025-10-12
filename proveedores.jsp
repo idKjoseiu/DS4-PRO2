@@ -1,3 +1,4 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -15,21 +16,19 @@
     
 
     <link rel="stylesheet" href="CSS/style.css">
-
 </head>
 <body>
-
-     <!-- Encabezado fijo -->
+    <!--Encabezado superior fijo -->
     <header class="encabezado">
         <button id="menu-toggle" class="btn">
             <span class="material-icons">menu</span>
         </button>
         <h4>Lavado de dinero</h4>
     </header>
-    
+
     <!-- Contenedor principal que incluye el menú y el contenido -->
     <div class="contenido-principal">
-        <!-- Menú lateral  -->
+        <!-- Menú lateral (ahora fuera del flujo normal) -->
         <aside id="menu-lateral" class="menu">
             <nav>
                 <a class="opciones" href="index.html"> <span class="material-icons"> home </span> Inicio </a>
@@ -44,16 +43,46 @@
             </nav>
         </aside>
 
-        <!-- Área de Contenido Principal -->
-        <main class="main-contenido-principal" id="main-content">
+        <!-- Contenido principal -->
+        <main id="main-content" class="main-contenido-principal">
             <div class="contenedor">
-                <div class="headC">Bienvenido al Panel de Control</div>
-                
-                </div>
+                <div class="headC">Proveedores</div>
+                <hr>
+                <form action="" class="formulario">
+                    <div class="row mb-3">
+                        <div class="col-md-3 mb-2">
+                            <label for="nombre">Nombre</label>
+                            <input id="nombre" name="nombre" type="text" class="">
+                        </div>
+                        <div class="col-md-9 mb-2">
+                            <label for="detalles">Detalles</label>
+                            <input id="detalles" name="detalles" type="text" class="">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-2">
+                            <button type="submit" class="btn btn-success w-100 d-flex align-items-center justify-content-center gap-2">
+                                <span class="material-icons">save</span>
+                                Guardar
+                            </button>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <button type="button" class="btn btn-secondary w-100 d-flex align-items-center justify-content-center gap-2">
+                                <span class="material-icons">list</span>
+                                Ver Proveedores Registrados
+                            </button>
+                        </div>
+                    </div>
+                </form>
             </div>
         </main>
-    </div>
+        
 
+
+
+    </div>
+    
     <!-- Script para la funcionalidad del menú (hamburguesa) -->
     <script src="js/main.js"></script>
 

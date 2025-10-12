@@ -18,17 +18,17 @@
     <link rel="stylesheet" href="CSS/style.css">
 </head>
 <body>
-    <!-- 1. Encabezado superior fijo -->
+    <!--Encabezado superior fijo -->
     <header class="encabezado">
         <button id="menu-toggle" class="btn">
             <span class="material-icons">menu</span>
         </button>
-        <!--agregar el logo o el título de la app en el futuro -->
+        <h4>Lavado de dinero</h4>
     </header>
     
-    <!-- 2. Contenedor principal que incluye el menú y el contenido -->
+    <!-- Contenedor principal que incluye el menú y el contenido -->
     <div class="contenido-principal">
-        <!-- 3. Menú lateral (ahora fuera del flujo normal) -->
+        <!-- Menú lateral (ahora fuera del flujo normal) -->
         <aside id="menu-lateral" class="menu">
             <nav>
                 <a class="opciones" href="index.html"> <span class="material-icons"> home </span> Inicio </a>
@@ -43,33 +43,151 @@
             </nav>
         </aside>
         
-        <!-- 4. Contenido principal -->
+        <!-- Contenido principal -->
         <main id="main-content" class="main-contenido-principal">
             <div class="contenedor">
                 <div class="headC">Conciliación Bancaria</div>
                 <hr>
-                <form action="" class="">
-                    <label for="mes">Mes</label>
-                    <select id="mes">
-                        <option value="01">Enero</option>
-                        <option value="02">Febrero</option>
-                        <option value="03">Marzo</option>
-                        <option value="04">Abril</option>
-                        <option value="05">Mayo</option>
-                        <option value="06">Junio</option>
-                        <option value="07">Julio</option>
-                        <option value="08">Agosto</option>
-                        <option value="09">Septiembre</option>
-                        <option value="10">Octubre</option>
-                        <option value="11">Noviembre</option>
-                        <option value="12">Diciembre</option>
-                    </select>
+                <form action="" class="formulario">
 
-                    <label for="anio">Año</label>
-                    <input id="anio" name="anio" type="date" class="form-control">
+                    <%-- primera fila: mes y año --%>
+                    <div class="row mb-3">
+                        <div class="col-md-3">
+                            <label for="mes" class="form-label">Mes</label>
+                            <select id="mes" class="form-select" name="mes">
+                                <option value="01">Enero</option>
+                                <option value="02">Febrero</option>
+                                <option value="03">Marzo</option>
+                                <option value="04">Abril</option>
+                                <option value="05">Mayo</option>
+                                <option value="06">Junio</option>
+                                <option value="07">Julio</option>
+                                <option value="08">Agosto</option>
+                                <option value="09">Septiembre</option>
+                                <option value="10">Octubre</option>
+                                <option value="11">Noviembre</option>
+                                <option value="12">Diciembre</option>
+                            </select>
+                        </div>
 
-                    <button type="submit" class="btn btn-success">Realizar Conciliación</button>
-                </form>
+                        <div class="col-md-3">
+                            <label for="anio" class="form-label">Año</label>
+                            <input id="anio" name="anio" type="number" min="2000" max="2030" step="1" placeholder="2025"
+                            style="height:40px;">
+                        </div>
+
+                        <div class="col-md-3 d-flex align-items-center">
+                            <button type="submit" class="btn btn-success w-100">Realizar Conciliación</button>
+                        </div>
+                        <hr>
+                    </div>
+
+                    <%-- seccion saldo segun libro al  --%>
+                    <div class="table-responsive">
+                        <table class="table table-bordered align-middle text-start tabla-conciliacion">
+                            <tbody>
+                                <tr class="fila-titulo">
+                                    <td> <strong>SALDO SEGÚN LIBRO AL </strong></td>
+                                    <td></td>
+                                    <td>                                       
+                                        <input type="text" class="inputEnTabla" value="$ 0.00" id="saldoLibro" name="saldoLibro" readonly>                                        
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="ps-4">Más: Depósito</td>
+                                    <td>                                       
+                                        <input type="text" class="inputEnTabla" value="0.00" id="deposito" name="deposito" readonly>                                      
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td class="ps-4">Cheques Anulados</td>
+                                    <td>
+                                        <input type="text" class="inputEnTabla" value="0.00" id="chequesAnulados" name="chequesAnulados" readonly>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td class="text-end pe-3">Subtotal</td>
+                                    <td>
+                                        <input type="text" class="inputEnTabla subtotal" value="$ 0.00" name="subtotal1" readonly>
+                                    </td>
+                                </tr>
+                                <tr class="fila-subtotal">
+                                    <td><strong>SUBTOTAL</strong></td>
+                                    <td></td>
+                                    <td>
+                                        <input type="text" class="inputEnTabla" value="$ 0.00" id="subtotalLibros" name="subtotalLibros" readonly>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="ps-4">Menos: Cheques Girados en el mes</td>
+                                    <td>
+                                        <input type="text" class="inputEnTabla" value="0.00" id="chequesGirados" name="chequesGirados" readonly>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td class="text-end pe-3">Subtotal</td>
+                                    <td>
+                                        <input type="text" class="inputEnTabla subtotal" value="$ 0.00" name="subtotal2" readonly>
+                                    </td>
+                                </tr>
+                                <tr class="fila-total">
+                                    <td><strong>SALDO CONCILIADO SEGÚN LIBROS AL</strong></td>
+                                    <td></td>
+                                    <td>
+                                        <input type="text" class="inputEnTabla" value="$ 0.00" id="saldoConciliado" name="saldoConciliado" readonly>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                         
+                         <%-- segunda seccion --%>
+                        <table class="table table-bordered table-sm align-middle text-start tabla-conciliacion mt-4">
+                            <tbody>
+                            <tr class="fila-titulo">
+                                <td><strong>SALDO EN BANCO AL</strong></td>
+                                <td></td>
+                                <td>
+                                    <input style= "border-bottom: 2px solid #9b9b9b;" type="text" class="form-control inputEnTabla" value="$ 0.00" id="saldoBanco" name="saldoBanco">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="ps-4">Más: Depósitos en Transito</td>
+                                <td>
+                                    <input type="text" class="inputEnTabla" value="0.00" id="depositoTransito" name="depositoTransito" readonly>
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="ps-4">Menos: Cheques en circulación</td>
+                                <td>
+                                    <input type="text" class="inputEnTabla" value="0.00" id="chequesCirculacion" name="chequesCirculacion" readonly>
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td class="text-end pe-3">Subtotal</td>
+                                <td>
+                                    <input type="text" class="inputEnTabla subtotal" value="$ 0.00" name="subtotal3" readonly>
+                                </td>
+                            </tr>
+                            <tr class="fila-total">
+                                <td><strong>SALDO CONCILIADO SEGÚN BANCO AL</strong></td>
+                                <td></td>
+                                <td>
+                                    <input type="text" class="inputEnTabla" value="$ 0.00" id="saldoConciliadoBanco" name="saldoConciliadoBanco" readonly>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+
             </div>
         </main>
     </div>
