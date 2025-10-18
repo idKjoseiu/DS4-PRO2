@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -32,10 +32,10 @@
         <aside id="menu-lateral" class="menu">
             <nav>
                 <a class="opciones" href="index.html"> <span class="material-icons"> home </span> Inicio </a>
-                <a class="opciones" href="pantalla1.jsp"> <span class="material-icons">account_balance</span> Conciliación Bancaria </a>
-                <a class="opciones" href="cheques.jsp">  <span class="material-icons">attach_money</span> Cheques </a>
+                <a class="opciones" href="pantalla1.html"> <span class="material-icons">account_balance</span> Conciliación Bancaria </a>
+                <a class="opciones" href="cheques.html">  <span class="material-icons">attach_money</span> Cheques </a>
 
-                <a class="opciones" href="proveedores.jsp">  <span class="material-icons">group</span> Proveedores </a>
+                <a class="opciones" href="proveedores.html">  <span class="material-icons">group</span> Proveedores </a>
 
                 <button class="dark-mode" id="darkMode">
                     <span class="material-icons">dark_mode</span>
@@ -48,7 +48,7 @@
             <div class="contenedor">
                 <div class="headC">Gestión de Cheques</div>
                 <hr>
-                <%-- formulario de cheque --%>
+                <!-- formulario de cheque -->
                 <form action="" class="formulario">
                     <!-- Primera fila: Número de Cheque y Fecha -->
                     <div class="row mb-3">
@@ -64,7 +64,7 @@
                             <label for="proveedor" class="form-label">Proveedor</label>
                             <select id="proveedor" name="proveedor" class="form-select mb-3" style ="height: 58px;">
                                 <option value="" disabled selected>Seleccione un proveedor</option>
-                                <%-- Aquí se cargarían los proveedores desde la base de datos --%>
+                                <!-- Aquí se cargarían los proveedores desde la base de datos -->
                                 <option value="1">Proveedor Ejemplo 1</option>
                                 <option value="2">Proveedor Ejemplo 2</option>
                          </select>
@@ -73,13 +73,13 @@
                             <label for="objetoDeGasto"Objeto de Gasto class="form-label">Objeto de Gasto</label>
                             <select id="objetoDeGasto" name="objetoDeGasto" class="form-select mb-3" style ="height: 58px;">
                                 <option value="" disabled selected>Opciones</option>
-                                <%-- Aquí se cargarían los proveedores desde la base de datos --%>
+                                <!-- Aquí se cargarían los proveedores desde la base de datos -->
                                 <option value="1">Proveedor Ejemplo 1</option>
                          </select>
                         </div>
                     </div>
 
-                    <%-- Fila 2: Detalles y Monto --%>
+                    <!-- Fila 2: Detalles y Monto -->
                     <div class="row mb-3">
                         <div class ="col-md-3">
                             <label for=detalles class="form-label">Detalles</label>
