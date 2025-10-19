@@ -341,11 +341,12 @@ body.dark-mode-active .form-select:hover {
 
 body.dark-mode-active .form-select:focus {
     border-color: var(--input-borde-color-focus);
-    background-color: #3a4147; /* Un poco más claro para indicar foco */
+    background-color: #3a4147; /* Un poco más claro para indicar focus */
 }
 
-/* Corrige el fondo de la tabla en modo oscuro que Bootstrap sobreescribe */
+/* Corrige el fondo de la tabla en modo oscuro de Bootstrap en pantalla1 */
 body.dark-mode-active .tabla-conciliacion td {
     background-color: transparent;
     color: var(--texto-primario);
 }
+

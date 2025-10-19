@@ -47,19 +47,22 @@
             <div class="contenedor">
                 <div class="headC">Proveedores</div>
                 <hr>
-                <form action="" class="formulario">
+                <form action="" class="formulario" id="formularioProveedores">
                     <div class="row mb-3">
                         <div class="col-md-4 mb-2">
                             <label for="nombre">Nombre</label>
-                            <input id="nombre" name="nombre" type="text" class="">
+                            <input id="nombre" name="nombre" type="text" class="" maxlength="20"
+                            oninput="this.value = this.value.replace(/[^A-Z a-z]/g, '')" required>
                         </div>
                         <div class="col-md-4 mb-2">
                             <label for="codigo">Código</label>
-                            <input id="codigo" name="codigo" type="number" class="">
+                            <input id="codigo" name="codigo" type="number" class="" maxlength="10"
+                            oninput="this.value = this.value.replace(/[^0-9]/g, '')" inputmode="numeric" required>
                         </div>
                         <div class="col-md-4 mb-2">
                             <label for="RUC">RUC</label>
-                            <input id="RUC" name="RUC" type="number" class="">
+                            <input id="RUC" name="RUC" type="text" class="" maxlength="10"
+                            oninput="this.value = this.value.replace(/[^0-9]/g, '')" required>
                         </div>
                     </div>
 
@@ -71,23 +74,77 @@
                             </button>
                         </div>
                         <div class="col-md-6 mb-2">
-                            <button type="button" class="btn btn-secondary w-100 d-flex align-items-center justify-content-center gap-2">
+                            <button id="verProveedoresBTN" type="button" class="btn btn-secondary w-100 d-flex align-items-center justify-content-center gap-2">
                                 <span class="material-icons">list</span>
                                 Ver Proveedores Registrados
                             </button>
                         </div>
                     </div>
                 </form>
+                <!-- alerta de retroalimentación -->
+                <div id="alerta" class="alert d-none d-flex align-items-center gap-2" role="alert">
+                    <p id="MSG" class="m-0"></p>
+                </div>
             </div>
         </main>
-        
-
-
-
     </div>
-    
+
     <!-- Script para la funcionalidad del menú (hamburguesa) -->
     <script src="js/main.js"></script>
+    <script>
+    // Referencia al formulario
+    const formulario = document.getElementById("formularioProveedores");
+    const MSG = document.getElementById("MSG");
+
+
+    // Evento al enviar el formulario
+    formulario.addEventListener("submit", function(e) {
+        e.preventDefault(); // Evita que la página se recargue
+        if (!formulario.checkValidity()) {
+            e.preventDefault(); // Evita que se envíe si hay errores
+            formulario.reportValidity(); // Muestra mensajes de error estándar de HTML5
+        }
+
+        // Recolectar los datos del formulario
+        const datosFormulario = new FormData(formulario);
+
+        // Enviar los datos al JSP
+        fetch("jsp/registrarProveedores.jsp", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: new URLSearchParams(datosFormulario)
+        })
+        // manejo de errores bien raro
+        .then(response => {
+            if (!response.ok) {
+                return response.text().then(text => { 
+                    throw new Error(text || `Error del servidor: ${response.statusText}`); 
+                });
+            }
+            return response.text();
+        })
+        .then(texto => {
+            if (texto.trim() === "OK") {
+                MSG.textContent = "Proveedor registrado";
+                const alerta = document.querySelector(".alert");
+                alerta.className = "alert alert-success";//color verde de exito
+                alerta.classList.remove("d-none");
+                formulario.reset(); // Limpiar el formulario
+            } else {
+                
+                throw new Error(texto || "Respuesta inesperada del servidor.");
+            }
+        })
+        .catch(error => {
+            MSG.textContent = "Error al registrar proveedor: " + error.message;
+            const alerta = document.getElementById("alerta");
+            alerta.className = "alert alert-danger";
+            alerta.classList.remove("d-none");
+        });
+    });
+</script>
 
 </body>
 </html>
