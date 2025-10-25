@@ -74,6 +74,7 @@ body {
   /* Añadido para evitar saltos de línea inesperados en botones largos */
   word-wrap: break-word;
   overflow: hidden; /* Mantiene el contenido dentro del botón */
+  z-index: 101; /* Asegura que el menú esté sobre el contenido principal */
 }
 
 /* Estilos para el botón de menú */
@@ -350,3 +351,17 @@ body.dark-mode-active .tabla-conciliacion td {
     color: var(--texto-primario);
 }
 
+/*---------------------------------------------------------------------------------*/
+/* ESTILOS RESPONSIVOS PARA MÓVILES */
+/*---------------------------------------------------------------------------------*/
+@media (max-width: 768px) {
+    /* En pantallas pequeñas, el menú no debe empujar el contenido */
+    .main-contenido-principal {
+        margin-left: 0 !important; /* Forzamos que no haya margen */
+    }
+
+    /* Cuando el menú está visible en móvil, no se debe aplicar la clase de expansión al contenido */
+    .main-contenido-principal.content-expanded {
+        margin-left: 0 !important;
+    }
+}
