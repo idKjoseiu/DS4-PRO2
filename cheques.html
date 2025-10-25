@@ -55,7 +55,7 @@
                     <a class="nav-link active" href="#generar" data-bs-toggle="tab">Generar</a>
                     </li>
                     <li class="nav-item">
-                    <a class="nav-link" href="#sacar" data-bs-toggle="tab">Sacar de circulación</a>
+                    <a class="nav-link" href="#sacar" data-bs-toggle="tab">Sacar de Circulación</a>
                     </li>
                     <li class="nav-item">
                     <a class="nav-link" href="#anular" data-bs-toggle="tab">Anular</a>
@@ -127,12 +127,41 @@
                     
                     <!-- sacar de circulacion -->
                      <div class="tab-pane fade show" id="sacar">
-                        <p>prueba</p>
+                        <form action="" class="formulario" id="formularioChequeSacar">
+                            <div class="row mb-3">
+                                <div class="col-md-3">
+                                    <label for="numeroCheque" class="form-label">Número de Cheque</label>
+                                    <input id="numeroCheque" name="numeroCheque" type="text" class="" required>
+
+                                    <div class="d-flex gap-4">
+                                        <button type="submit" class="btn btn-info">Buscar</button>
+                                        <button type="submit" class="btn btn-danger">Sacar de Circulación</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
                      </div>
 
                      <!-- anular -->
                      <div class="tab-pane fade" id="anular">
-                        <p>prueba</p>
+                        <form action="" class="formulario" id="formularioChequeAnular">
+                            <div class="row mb-3">
+                                <div class="col-md-3">
+                                    <label for="numeroCheque" class="form-label">Número de Cheque</label>
+                                    <input id="numeroCheque" name="numeroCheque" type="text" class="" required>
+                                    <center><button type="submit" class="btn btn-success">Buscar</button></center>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="fechaEmision" class="form-label">Fecha de Emisión</label>
+                                    <input id="fechaEmision" name="fechaEmision" type="date" class="" readonly>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="motivo" class="form-label">Motivo</label>
+                                    <input id="motivo" name="motivo" type="text" class="" required>
+                                </div>
+                                </div>
+                            </div>
+                        </form>
                      </div>
 
                  </div>
