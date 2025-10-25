@@ -2,7 +2,7 @@
 <%@ page contentType="application/json; charset=UTF-8" %>
 <%
     Connection conn = null;
-    Statement st = null;
+    PreparedStatement ps = null;
     ResultSet rs = null;
     
     // Usaremos un StringBuilder para construir el string JSON eficientemente.
@@ -20,9 +20,9 @@
         conn = DriverManager.getConnection(url, usuario, contrasena);
 
         // 3. Crear y ejecutar la consulta SQL
-        st = conn.createStatement();
         String sql = "SELECT * FROM proveedores ORDER BY Nombre ASC";
-        rs = st.executeQuery(sql);
+        ps = conn.prepareStatement(sql);
+        rs = ps.executeQuery();
 
         boolean esPrimero = true;
 
@@ -59,7 +59,7 @@
     } finally {
         // 5. Cerrar recursos
         if (rs != null) try { rs.close(); } catch (SQLException e) {}
-        if (st != null) try { st.close(); } catch (SQLException e) {}
+        if (ps != null) try { ps.close(); } catch (SQLException e) {}
         if (conn != null) try { conn.close(); } catch (SQLException e) {}
     }
 

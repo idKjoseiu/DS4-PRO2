@@ -2,7 +2,7 @@
 <%@ page contentType="application/json; charset=UTF-8" %>
 <%
     Connection conn = null;
-    Statement st = null;
+    PreparedStatement ps = null;
     ResultSet rs = null;
     
     // Usaremos un StringBuilder para construir el string JSON 
@@ -20,9 +20,9 @@
         conn = DriverManager.getConnection(url, usuario, contrasena);
 
         // 3 Consulta sql y ejecucion
-        st = conn.createStatement();
         String sql = "SELECT codigo, detalle, objeto FROM objeto_gasto ORDER BY objeto ASC";
-        rs = st.executeQuery(sql);
+        ps = conn.prepareStatement(sql);
+        rs = ps.executeQuery(sql);
 
         boolean esPrimero = true;
 
@@ -58,7 +58,7 @@
 
         } finally {
             if(rs != null) try { rs.close(); } catch (SQLException e) {}
-            if(st != null) try { st.close(); } catch (SQLException e) {}
+            if(ps != null) try { ps.close(); } catch (SQLException e) {}
             if(conn != null) try { conn.close(); } catch (SQLException e) {}
         }
 

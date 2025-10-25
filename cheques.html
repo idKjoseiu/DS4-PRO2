@@ -127,16 +127,50 @@
                     
                     <!-- sacar de circulacion -->
                      <div class="tab-pane fade show" id="sacar">
-                        <form action="" class="formulario" id="formularioChequeSacar">
-                            <div class="row mb-3">
-                                <div class="col-md-3">
+                        <!-- Formulario de Búsqueda -->
+                        <form class="formulario" id="formularioChequeSacar">
+                            <div class="row align-items-center mb-3">
+                                <div class="col-md-2    ">
                                     <label for="numeroCheque" class="form-label">Número de Cheque</label>
-                                    <input id="numeroCheque" name="numeroCheque" type="text" class="" required>
-                                 <center><button type="submit" class="btn btn-info">Buscar</button></center>
+                                    <input id="numeroCheque" name="numeroCheque" type="text" class="" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')" inputmode="numeric" required>
+                                </div>
+                                <div class="col-md-3">
+                                    <button type="submit" class="btn btn-info d-flex ">
+                                        <span class="material-icons">search</span>
+                                        Buscar
+                                    </button>
                                 </div>
                             </div>
                         </form>
-                     </div>
+
+                        <!-- Sección para mostrar los resultados de la búsqueda (inicialmente oculta) -->
+                        <div id="resultadoBusquedaCheque" class="formulario">
+                            <div class="row align-items-center mb-3">
+                                <div class="col-md-3">
+                                    <label class="form-label">Fecha de Emisión</label>
+                                    <input type="text" id="resFecha" class="" readonly>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">Proveedor</label>
+                                    <input type="text" id="resProveedor" class="" readonly>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">Monto</label>
+                                    <input type="text" id="resMonto" class="" readonly>
+                                </div>
+                                <div class="col-md-3">
+                                    <button id="btnSacarCirculacion" class="btn btn-warning w-100 d-flex align-items-center justify-content-center gap-2">
+                                        <span class="material-icons">block</span>
+                                        Sacar de Circulación
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Alerta de retroalimentación para la búsqueda -->
+                        <div id="alertaSacar" class="alert d-none d-flex align-items-center gap-2 mt-3" role="alert">
+                            <p id="MSGSacar" class="m-0"></p>
+                        </div>
 
                      <!-- anular -->
                      <div class="tab-pane fade" id="anular">

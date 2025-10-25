@@ -131,6 +131,106 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     }
+
+    /* -----------------------------------------
+     Para sacar de circulacion los cheques
+    -----------------------------------------*/
+    const formularioChequeSacar = document.getElementById('formularioChequeSacar');
+
+    if (formularioChequeSacar) {
+        const resultadoBusqueda = document.getElementById('resultadoBusquedaCheque');
+        const alertaSacar = document.getElementById('alertaSacar');
+        const MSGSacar = document.getElementById('MSGSacar');
+
+        formularioChequeSacar.addEventListener('submit', function(e) {
+            e.preventDefault(); // Evitamos que la página se recargue
+
+            // Ocultamos resultados y alertas anteriores
+            resultadoBusqueda.classList.add('d-none');
+            alertaSacar.classList.add('d-none');
+
+            const datosFormulario = new FormData(formularioChequeSacar);
+
+            // Enviamos el número de cheque al JSP para buscarlo
+            fetch('jsp/obtenerCheque.jsp', {
+                method: 'POST',
+                body: new URLSearchParams(datosFormulario)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Error del servidor: ${response.statusText}`);
+                }
+                return response.json(); // Esperamos una respuesta JSON
+            })
+            .then(data => {
+                if (data.encontrado) {
+                    // Si se encontró, llenamos los campos y mostramos la sección
+                    document.getElementById('resFecha').value = data.fecha;
+                    document.getElementById('resProveedor').value = data.proveedor;
+                    document.getElementById('resMonto').value = data.monto;
+                    
+                    resultadoBusqueda.classList.remove('d-none');
+                } else {
+                    // Si no se encontró, mostramos una alerta de información
+                    MSGSacar.textContent = data.mensaje || "No se encontró el cheque especificado.";
+                    alertaSacar.className = "alert alert-info d-flex align-items-center gap-2 mt-3";
+                    alertaSacar.classList.remove("d-none");
+                }
+            })
+            .catch(error => {
+                // Si hay un error en la comunicación o en el parseo, mostramos una alerta de error
+                console.error('Error al buscar cheque:', error);
+                MSGSacar.textContent = "Error al buscar el cheque: " + error.message;
+                alertaSacar.className = "alert alert-danger d-flex align-items-center gap-2 mt-3";
+                alertaSacar.classList.remove("d-none");
+            });
+        });
+
+        // --- Lógica para el botón "Sacar de Circulación" ---
+        const btnSacarCirculacion = document.getElementById('btnSacarCirculacion');
+
+        btnSacarCirculacion.addEventListener('click', function() {
+            const numeroChequeInput = document.getElementById('numeroCheque');
+            const numeroCheque = numeroChequeInput.value;
+
+            if (!numeroCheque) {
+                MSGSacar.textContent = "No se ha especificado un número de cheque.";
+                alertaSacar.className = "alert alert-warning d-flex align-items-center gap-2 mt-3";
+                alertaSacar.classList.remove("d-none");
+                return;
+            }
+
+            // Enviamos el número de cheque al JSP para actualizar su estado
+            fetch('jsp/sacarCirculacionCheque.jsp', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `numeroCheque=${encodeURIComponent(numeroCheque)}`
+            })
+            .then(response => response.text())
+            .then(texto => {
+                if (texto.trim() === "OK") {
+                    MSGSacar.textContent = `El cheque N° ${numeroCheque} ha sido sacado de circulación exitosamente.`;
+                    alertaSacar.className = "alert alert-success d-flex align-items-center gap-2 mt-3";
+                    alertaSacar.classList.remove("d-none");
+
+                    // Ocultamos los resultados y reseteamos el formulario de búsqueda
+                    resultadoBusqueda.classList.add('d-none');
+                    formularioChequeSacar.reset();
+                } else {
+                    throw new Error(texto || "Respuesta inesperada del servidor.");
+                }
+            })
+            .catch(error => {
+                MSGSacar.textContent = "Error al procesar la solicitud: " + error.message;
+                alertaSacar.className = "alert alert-danger d-flex align-items-center gap-2 mt-3";
+                alertaSacar.classList.remove("d-none");
+            });
+        });
+    }
+
+
     
     /* -----------------------------------------
      CONVERSIÓN DE NÚMERO A LETRAS

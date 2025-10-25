@@ -63,7 +63,7 @@ body {
 /*---------------------------------------------------------------------------------*/
 /* MENU DE NAVEGACIÓN LATERAL */
 .menu {
-  width: 250px; 
+  width: 250px;
   background-color: var(--menu-fondo);
   border-radius: 20px;
   padding: 20px 10px;
@@ -74,7 +74,6 @@ body {
   /* Añadido para evitar saltos de línea inesperados en botones largos */
   word-wrap: break-word;
   overflow: hidden; /* Mantiene el contenido dentro del botón */
-  z-index: 101; /* Asegura que el menú esté sobre el contenido principal */
 }
 
 /* Estilos para el botón de menú */
