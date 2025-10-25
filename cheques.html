@@ -67,7 +67,7 @@
                     <!-- generacion de cheques -->
                     <div class="tab-pane fade show active" id ="generar">
                         <!-- formulario de cheque -->
-                        <form action="" class="formulario">
+                        <form action="" class="formulario" id="formularioChequeGuardar">
                             <!-- Primera fila: Número de Cheque y Fecha -->
                             <div class="row mb-3">
                                 <div class="col-md-3">
@@ -118,6 +118,10 @@
                             
                             <button type="submit" class="btn btn-success">Generar Cheque</button>
                         </form>
+                         <!-- alerta de retroalimentación -->
+                        <div id="alerta" class="alert d-none d-flex align-items-center gap-2" role="alert">
+                            <p id="MSG" class="m-0"></p>
+                        </div>
 
                     </div>
                     

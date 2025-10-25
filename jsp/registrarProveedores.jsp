@@ -16,22 +16,25 @@
         String nombre = request.getParameter("nombre");
         String codigo = request.getParameter("codigo");
         String RUC = request.getParameter("RUC");
+        String direccion = request.getParameter("direccion");
 
         // 2. Validar que los datos no estén vacíos
         if(nombre == null || nombre.trim().isEmpty() || 
            codigo == null || codigo.trim().isEmpty() || 
-           RUC == null || RUC.trim().isEmpty()){
+           RUC == null || RUC.trim().isEmpty() || 
+           direccion == null || direccion.trim().isEmpty()){
             out.print("Todos los campos son obligatorios.");
             return; // Detiene la ejecución del JSP
         }
         
         //Inserción de datos en la base de datos
-        String sql = "INSERT INTO proveedores (Nombre, Codigo, RUC) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO proveedores (Nombre, Codigo, RUC, Direccion) VALUES (?, ?, ?, ?)";
         ps = con.prepareStatement(sql);
         
         ps.setString(1, nombre);
         ps.setString(2, codigo);
         ps.setString(3, RUC);
+        ps.setString(4, direccion);
         
         int filasAfectadas = ps.executeUpdate();
         

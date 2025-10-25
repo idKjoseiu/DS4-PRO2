@@ -21,7 +21,7 @@
 
         // 3. Crear y ejecutar la consulta SQL
         st = conn.createStatement();
-        String sql = "SELECT Nombre FROM proveedores ORDER BY Nombre ASC";
+        String sql = "SELECT * FROM proveedores ORDER BY Nombre ASC";
         rs = st.executeQuery(sql);
 
         boolean esPrimero = true;
@@ -33,11 +33,16 @@
             }
 
             // seleccionamos el nombre
-            String nombre = rs.getString("nombre").replace("\"", "\\\""); 
+            String nombre = rs.getString("nombre").replace("\"", "\\\"");
+            String codigo = rs.getString("codigo").replace("\"", "\\\"");
+            String RUC = rs.getString("RUC");
+            String direccion = rs.getString("direccion");
+            
 
             // lo agregamos el json
             jsonProveedores.append("{");
             jsonProveedores.append("\"nombre\":\"").append(nombre).append("\"");
+            jsonProveedores.append(",\"codigo\":\"").append(codigo).append("\"");
             jsonProveedores.append("}");
 
             esPrimero = false;

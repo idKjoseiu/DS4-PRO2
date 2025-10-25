@@ -49,20 +49,23 @@
                 <hr>
                 <form action="" class="formulario" id="formularioProveedores">
                     <div class="row mb-3">
-                        <div class="col-md-4 mb-2">
+                        <div class="col-md-3 mb-2">
                             <label for="nombre">Nombre</label>
                             <input id="nombre" name="nombre" type="text" class="" maxlength="20"
                             oninput="this.value = this.value.replace(/[^A-Z a-z]/g, '')" required>
                         </div>
-                        <div class="col-md-4 mb-2">
+                        <div class="col-md-3 mb-2">
                             <label for="codigo">Código</label>
                             <input id="codigo" name="codigo" type="number" class="" maxlength="10"
                             oninput="this.value = this.value.replace(/[^0-9]/g, '')" inputmode="numeric" required>
                         </div>
-                        <div class="col-md-4 mb-2">
+                        <div class="col-md-3 mb-2">
                             <label for="RUC">RUC</label>
-                            <input id="RUC" name="RUC" type="text" class="" maxlength="10"
-                            oninput="this.value = this.value.replace(/[^0-9]/g, '')" required>
+                            <input id="RUC" name="RUC" type="text" class="" maxlength="10" required>
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <label for="direccion">Dirección</label>
+                            <input id="direccion" name="direccion" type="text" class="" maxlength="50" required>
                         </div>
                     </div>
 
