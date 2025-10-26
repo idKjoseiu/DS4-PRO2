@@ -71,42 +71,94 @@
                 </div>
 
                 <!-- Fila de Tarjetas de Resumen (KPIs) -->
-                <div class="row mb-4">
+                <div class="row mb-5">
                     <div class="col-md-4 mb-3">
                         <div class="card-dashboard h-100">
-                            <div class="card-body text-center">
-                                <h5 class="card-title">Saldo Conciliado</h5>
-                                <p class="card-text display-6">$ 15,250.75</p>
-                                <small class="text-muted">Actualizado hoy</small>
+                            <div class="card-body d-flex align-items-center">
+                                <span class="material-icons display-4 me-3 text-success">account_balance_wallet</span>
+                                <div>
+                                    <h5 class="card-title mb-1">Saldo Conciliado</h5>
+                                    <p class="card-text fs-4 mb-0">$ 15,250.75</p>
+                                    <small class="text-muted">Actualizado hoy</small>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-4 mb-3">
                         <div class="card-dashboard h-100">
-                            <div class="card-body text-center">
-                                <h5 class="card-title">Cheques Pendientes</h5>
-                                <p class="card-text display-6">12</p>
-                                <small class="text-muted">Total: $ 4,800.00</small>
+                            <div class="card-body d-flex align-items-center">
+                                <span class="material-icons display-4 me-3 text-warning">hourglass_top</span>
+                                <div>
+                                    <h5 class="card-title mb-1">Cheques Pendientes</h5>
+                                    <p class="card-text fs-4 mb-0">12</p>
+                                    <small class="text-muted">Total: $ 4,800.00</small>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-4 mb-3">
                         <div class="card-dashboard h-100">
-                            <div class="card-body text-center">
-                                <h5 class="card-title">Proveedores Activos</h5>
-                                <p class="card-text display-6">42</p>
-                                <small class="text-muted">3 nuevos este mes</small>
+                            <div class="card-body d-flex align-items-center">
+                                <span class="material-icons display-4 me-3 text-info">groups</span>
+                                <div>
+                                    <h5 class="card-title mb-1">Proveedores Activos</h5>
+                                    <p class="card-text fs-4 mb-0">42</p>
+                                    <small class="text-muted">3 nuevos este mes</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fila de Gráfico y Actividad Reciente -->
+                <div class="row mb-5">
+                    
+                    <div class="col-lg-8 mb-4">
+                        <div class="card-dashboard h-100">
+                            <div class="card-body">
+                                <h5 class="card-title">Video Destacado de esta semana</h5>
+                                <p class="text-muted small"></p>
+                                <!-- Espacio para el video  -->
+                                <div class="ratio ratio-16x9 rounded overflow-hidden">
+                                    <iframe width="875" height="492" src="https://www.youtube.com/embed/HN9I5ZJYNf0?list=RDHN9I5ZJYNf0" title="Dinero Dinero - Don Cangrejo Ft Calamardo - Trip Session 5 - (Prod Trip Music)" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Columna de Actividad Reciente -->
+                    <div class="col-lg-4 mb-4">
+                        <div class="card-dashboard h-100">
+                            <div class="card-body">
+                                <h5 class="card-title mb-3">Actividad Reciente</h5>
+                                <ul class="list-group list-group-flush lista-actividad">
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <span class="material-icons me-3">add_card</span>
+                                        <div>Cheque #1054 generado <br><small class="text-muted">Hace 15 minutos</small></div>
+                                    </li>
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <span class="material-icons me-3">person_add</span>
+                                        <div>Proveedor 'ACME Inc.' añadido <br><small class="text-muted">Hace 2 horas</small></div>
+                                    </li>
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <span class="material-icons me-3">block</span>
+                                        <div>Cheque #1051 sacado de circulación <br><small class="text-muted">Ayer</small></div>
+                                    </li>
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <span class="material-icons me-3">account_balance</span>
+                                        <div>Conciliación de Mayo completada <br><small class="text-muted">Hace 2 días</small></div>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Fila de Accesos Rápidos -->
-                <h5 class="mb-3">Accesos Rápidos</h5>
+                <h5 class="mb-3 text-center">Accesos Rápidos</h5>
                 <div class="row text-center mb-4">
-                    <div class="col-md-4 mb-3"><a href="cheques.html" class="btn btn-primary w-100 p-3"><span class="material-icons me-2">add_card</span>Generar Cheque</a></div>
-                    <div class="col-md-4 mb-3"><a href="proveedores.html" class="btn btn-secondary w-100 p-3"><span class="material-icons me-2">person_add</span>Registrar Proveedor</a></div>
-                    <div class="col-md-4 mb-3"><a href="pantalla1.html" class="btn btn-info w-100 p-3"><span class="material-icons me-2">account_balance_wallet</span>Iniciar Conciliación</a></div>
+                    <div class="col-md-4 mb-3"><a href="cheques.html" class="btn btn-primary w-100 p-3 d-flex flex-column align-items-center"><span class="material-icons fs-1 mb-1">add_card</span>Generar Cheque</a></div>
+                    <div class="col-md-4 mb-3"><a href="proveedores.html" class="btn btn-secondary w-100 p-3 d-flex flex-column align-items-center"><span class="material-icons fs-1 mb-1">person_add</span>Registrar Proveedor</a></div>
+                    <div class="col-md-4 mb-3"><a href="pantalla1.html" class="btn btn-info w-100 p-3 d-flex flex-column align-items-center"><span class="material-icons fs-1 mb-1">account_balance_wallet</span>Iniciar Conciliación</a></div>
                 </div>
             </div>
         </main>

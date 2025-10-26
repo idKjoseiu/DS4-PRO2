@@ -1,5 +1,45 @@
 /*---------------------------------------------------------------------------------*/
-/* ANTORCHA DE MINECRAFT - From Uiverse.io by KSAplay */
+/* ESTILOS DASHBOARD (index.html) */
+/*---------------------------------------------------------------------------------*/
+/* Contenedor para las gráficas para asegurar responsividad */
+.chart-container {
+    position: relative;
+    height: 280px; /* Altura por defecto para las gráficas */
+    width: 100%;
+}
+
+/* Ajuste de altura de la gráfica para dispositivos móviles */
+@media (max-width: 768px) {
+    .chart-container {
+        height: 220px;
+    }
+}
+.card-dashboard {
+    background-color: var(--input-fondo);
+    border: 1px solid var(--input-borde-color);
+    border-radius: 15px;
+    transition: all 0.3s ease;
+}
+
+.card-dashboard:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+body.dark-mode-active .card-dashboard:hover {
+     box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+}
+
+.card-dashboard .card-title {
+    color: var(--texto-secundario);
+}
+
+.card-dashboard .card-text {
+    color: var(--texto-primario);
+    font-weight: 600;
+}
+/*---------------------------------------------------------------------------------*/
+/* ANTORCHA DE MINECRAFT 
 /*---------------------------------------------------------------------------------*/
 .container-torch input {
   position: absolute;
