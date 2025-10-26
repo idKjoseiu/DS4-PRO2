@@ -290,20 +290,6 @@ table .inputEnTabla:required, table .inputEnTabla:invalid {
     transform: scale(1.2) rotate(-10deg); /* Agranda y rota ligeramente el ícono */
 }
 
-/* Estilos para la lista de actividad reciente en el dashboard */
-.lista-actividad .list-group-item {
-    background-color: transparent;
-    border-color: var(--tabla-fila-borde-color);
-    color: var(--texto-secundario);
-}
-
-.lista-actividad .material-icons {
-    color: var(--acento-secundario);
-}
-
-body.dark-mode-active .lista-actividad .material-icons {
-    color: var(--acento-primario);
-}
 
 /*---------------------------------------------------------------------------------*/
 /* MODO OSCURO */
