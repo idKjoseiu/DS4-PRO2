@@ -71,9 +71,10 @@ body {
   position: fixed;
   left: 0;
   top: 56px;
-  /* Añadido para evitar saltos de línea inesperados en botones largos */
+  bottom: 0; /* Asegura que el menú llegue hasta el final de la pantalla */
   word-wrap: break-word;
   overflow: hidden; /* Mantiene el contenido dentro del botón */
+  z-index: 1000;
 }
 
 /* Estilos para el botón de menú */

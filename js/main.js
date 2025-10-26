@@ -4,17 +4,34 @@ document.addEventListener('DOMContentLoaded', function () {
     const sideMenu = document.getElementById('menu-lateral');
     const mainContent = document.getElementById('main-content');
 
+    const isMobile = () => window.innerWidth <= 768;
+
+    // Función para ocultar el menú
+    const hideMenu = () => {
+        sideMenu.classList.add('menu-hidden');
+        mainContent.classList.add('content-expanded');
+    };
+
+    // Evento para el botón de hamburguesa
     menuToggle.addEventListener('click', () => {
         sideMenu.classList.toggle('menu-hidden');
         mainContent.classList.toggle('content-expanded');
     });
 
-    // Resaltar la opción de menú activa
+    // Resaltar la opción de menú activa y añadir evento de clic para cerrar en móvil
     const paginaActual = window.location.pathname.split("/").pop();
     const menuLinks = document.querySelectorAll('#menu-lateral .opciones');
 
     menuLinks.forEach(link => {
         const linkPage = link.getAttribute('href');
+
+        // Ocultar menú al hacer clic en una opción en móvil
+        link.addEventListener('click', () => {
+            if (isMobile()) {
+                hideMenu();
+            }
+        });
+
         if (linkPage === paginaActual) {
             link.classList.add('active');
         }
@@ -35,5 +52,10 @@ document.addEventListener('DOMContentLoaded', function () {
     // Comprobar si el modo oscuro estaba activado en la visita anterior
     if (localStorage.getItem('darkMode') === 'enabled') {
         document.body.classList.add('dark-mode-active');
+    }
+
+    // Ocultar el menú por defecto en la carga si es móvil
+    if (isMobile()) {
+        hideMenu();
     }
 });
