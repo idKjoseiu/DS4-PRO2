@@ -352,16 +352,29 @@ body.dark-mode-active .tabla-conciliacion td {
 }
 
 /*---------------------------------------------------------------------------------*/
-/* ESTILOS RESPONSIVOS PARA MÓVILES */
+/* ESTILOS DASHBOARD (index.html) */
 /*---------------------------------------------------------------------------------*/
-@media (max-width: 768px) {
-    /* En pantallas pequeñas, el menú no debe empujar el contenido */
-    .main-contenido-principal {
-        margin-left: 0 !important; /* Forzamos que no haya margen */
-    }
+.card-dashboard {
+    background-color: var(--input-fondo);
+    border: 1px solid var(--input-borde-color);
+    border-radius: 15px;
+    transition: all 0.3s ease;
+}
 
-    /* Cuando el menú está visible en móvil, no se debe aplicar la clase de expansión al contenido */
-    .main-contenido-principal.content-expanded {
-        margin-left: 0 !important;
-    }
+.card-dashboard:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+body.dark-mode-active .card-dashboard:hover {
+     box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+}
+
+.card-dashboard .card-title {
+    color: var(--texto-secundario);
+}
+
+.card-dashboard .card-text {
+    color: var(--texto-primario);
+    font-weight: 600;
 }

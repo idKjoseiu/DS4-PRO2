@@ -15,6 +15,7 @@
     
 
     <link rel="stylesheet" href="CSS/style.css">
+    <link rel="stylesheet" href="CSS/torch.css">
 
 </head>
 <body>
@@ -49,8 +50,63 @@
         <!-- Área de Contenido Principal -->
         <main class="main-contenido-principal" id="main-content">
             <div class="contenedor">
-                <div class="headC">Bienvenido al Panel de Control</div>
-                
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div class="headC text-start">Panel de Control</div>
+                    <!-- Contenedor para la antorcha de Minecraft -->
+                    <label class="container-torch">
+                        <input type="checkbox" checked="checked">
+                        <div class="torch">
+                            <div class="head">
+                                <div class="face top"><div></div><div></div><div></div><div></div></div>
+                                <div class="face left"><div></div><div></div><div></div><div></div></div>
+                                <div class="face right"><div></div><div></div><div></div><div></div></div>
+                            </div>
+                            <div class="stick">
+                                <div class="side side-left"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                                <div class="side side-right"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                            </div>
+                        </div>
+                        <div class="simple-text">Haz click :)</div>
+                    </label>
+                </div>
+
+                <!-- Fila de Tarjetas de Resumen (KPIs) -->
+                <div class="row mb-4">
+                    <div class="col-md-4 mb-3">
+                        <div class="card-dashboard h-100">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">Saldo Conciliado</h5>
+                                <p class="card-text display-6">$ 15,250.75</p>
+                                <small class="text-muted">Actualizado hoy</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="card-dashboard h-100">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">Cheques Pendientes</h5>
+                                <p class="card-text display-6">12</p>
+                                <small class="text-muted">Total: $ 4,800.00</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="card-dashboard h-100">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">Proveedores Activos</h5>
+                                <p class="card-text display-6">42</p>
+                                <small class="text-muted">3 nuevos este mes</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fila de Accesos Rápidos -->
+                <h5 class="mb-3">Accesos Rápidos</h5>
+                <div class="row text-center mb-4">
+                    <div class="col-md-4 mb-3"><a href="cheques.html" class="btn btn-primary w-100 p-3"><span class="material-icons me-2">add_card</span>Generar Cheque</a></div>
+                    <div class="col-md-4 mb-3"><a href="proveedores.html" class="btn btn-secondary w-100 p-3"><span class="material-icons me-2">person_add</span>Registrar Proveedor</a></div>
+                    <div class="col-md-4 mb-3"><a href="pantalla1.html" class="btn btn-info w-100 p-3"><span class="material-icons me-2">account_balance_wallet</span>Iniciar Conciliación</a></div>
                 </div>
             </div>
         </main>
