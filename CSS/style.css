@@ -75,6 +75,8 @@ body {
   word-wrap: break-word;
   overflow: hidden; /* Mantiene el contenido dentro del botón */
   z-index: 1000;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Estilos para el botón de menú */
@@ -157,6 +159,20 @@ body {
   transition: 300ms;
   filter: blur(1.5px);
   transform: scale(0.95, 0.95);
+}
+
+.menu-footer {
+    margin-top: auto;
+}
+
+/* Estilo para el botón de usuario en el pie del menú */
+#UsuarioBTN {
+    color: var(--menu-enlace-color);
+}
+
+/* Aumenta el tamaño del ícono de usuario */
+#UsuarioBTN .material-icons {
+    font-size: 2.0rem; /* Un poco más grande que el tamaño por defecto */
 }
 
 /*CUERPO/BODY-------------------------------------------------------------------*/
@@ -349,4 +365,23 @@ body.dark-mode-active .form-select:focus {
 body.dark-mode-active .tabla-conciliacion td {
     background-color: transparent;
     color: var(--texto-primario);
+}
+
+/*---------------------------------------------------------------------------------*/
+/* ESTILOS PÁGINA DE LOGIN
+/*---------------------------------------------------------------------------------*/
+body.login-pagina {
+    /* Centra el contenido vertical y horizontalmente */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding-top: 0; /* Sobrescribe el padding-top general */
+    background: var(--contenedor-fondo); /* Usa un fondo consistente con los contenedores */
+}
+
+.login-container {
+    max-width: 450px;
+    width: 100%;
+    padding: 15px;
 }
