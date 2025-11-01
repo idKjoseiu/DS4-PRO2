@@ -180,19 +180,21 @@ body {
 
 .contenedor{
     max-width: 100%;
+    margin: 0; /* Quitamos el margen anterior */
+    padding: 25px 35px;
+    
     background: var(--contenedor-fondo);
     border-radius: 40px;
-    padding: 25px 35px;
     border: 5px solid var(--contenedor-borde-color);
     box-shadow: var(--contenedor-sombra);
-    margin: 0; /* Quitamos el margen anterior */
+    
 }
 
 /* Área de contenido principal */
 .main-contenido-principal {
     flex-grow: 1; /* Ocupa el espacio restante */
     margin-left: 250px; /* Deja espacio para el menú */
-    padding: 20px;
+    padding: 1px;
     transition: margin-left 0.1s ease; /* Transición suave */
 }
 
