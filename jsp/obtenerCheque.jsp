@@ -14,7 +14,8 @@
     // Validar que se recibió el número de cheque
     if (numeroCheque == null || numeroCheque.trim().isEmpty()) {
         response.setStatus(HttpServletResponse.SC_BAD_REQUEST); // 400 Bad Request
-        jsonResponse.append("{\"encontrado\":false, \"mensaje\":\"No se proporcionó un número de cheque.\"}");
+        jsonResponse.append("{\"encontrado\":false, \"mensaje\":\"Mostrar los cheques mas recientes.\"}");
+
         out.print(jsonResponse.toString());
         return;
     }
@@ -29,7 +30,10 @@
 
         // 3. Usar PreparedStatement para seguridad
         // Se une con la tabla de proveedores para obtener el nombre.
-        String sql = "SELECT FechaEmision, Monto FROM cheques WHERE NumeroCheque = ?";
+        String sql = "SELECT c.NumeroCheque, c.FechaEmision, p.nombre AS NombreProveedor, c.Monto " +
+                     "FROM cheques c " +
+                     "JOIN proveedores p ON c.Proveedor = p.codigo " +
+                     "WHERE c.NumeroCheque = ?";
         ps = conn.prepareStatement(sql);
         ps.setString(1, numeroCheque); // Asignar el valor al '?'
 
@@ -40,12 +44,15 @@
         if (rs.next()) {
             // Si se encontró el cheque, construir el JSON con los datos
             String fecha = rs.getString("FechaEmision");
+            String proveedor = rs.getString("NombreProveedor");
             double monto = rs.getDouble("Monto");
 
             //agregamos al json
             jsonResponse.append("{");
             jsonResponse.append("\"encontrado\":true,");
+            jsonResponse.append("\"numeroCheque\":\"").append(numeroCheque).append("\",");
             jsonResponse.append("\"fecha\":\"").append(fecha).append("\",");
+            jsonResponse.append("\"proveedor\":\"").append(proveedor).append("\",");
             jsonResponse.append("\"monto\":").append(monto);
             jsonResponse.append("}");
         } else {

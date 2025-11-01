@@ -214,7 +214,7 @@ body {
 }
 
 /*estilo del formulario de cheques*/
-.formulario input{
+.formulario input, .formulario textarea{
     width: 100%;
     background: var(--input-fondo);
     border: none;
@@ -225,11 +225,11 @@ body {
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.formulario input:hover{
+.formulario input:hover, .formulario textarea:hover{
     border-color: var(--input-borde-color-hover);
 }
 
-.formulario input:focus {
+.formulario input:focus, .formulario textarea:focus {
     outline: none;
     border-color: var(--input-borde-color-focus);
     
@@ -239,7 +239,8 @@ body {
    Estilo para los campos de solo lectura dentro de las tablas.*/
 table .inputEnTabla {
   font-family: inherit;
-  width: 95%;
+  width: 50%;
+  max-width: 60%;
   border: none;
   /*border-bottom: 2px solid #9b9b9b;*/
   outline: 0;
@@ -293,6 +294,13 @@ table .inputEnTabla:required, table .inputEnTabla:invalid {
     background-color: var(--tabla-encabezado-fondo);
     font-weight: bold;
     color: var(--tabla-encabezado-texto-color);
+}
+
+/* Estilos para la tabla de gestión de cheques */
+.tabla-gestion thead th {
+    background-color: var(--tabla-encabezado-fondo);
+    color: var(--tabla-encabezado-texto-color);
+    font-weight: bold;
 }
 
 /* Estilos para botones con íconos ---------------------------------------------------------------------*/
@@ -363,6 +371,12 @@ body.dark-mode-active .form-select:focus {
 
 /* Corrige el fondo de la tabla en modo oscuro de Bootstrap en pantalla1 */
 body.dark-mode-active .tabla-conciliacion td {
+    background-color: transparent;
+    color: var(--texto-primario);
+}
+
+/* Corrige el fondo de la tabla de gestión de cheques en modo oscuro */
+body.dark-mode-active .tabla-gestion td {
     background-color: transparent;
     color: var(--texto-primario);
 }
