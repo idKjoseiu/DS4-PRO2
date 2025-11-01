@@ -8,12 +8,21 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Función para ocultar el menú
     const hideMenu = () => {
+        if (isMobile()) {
+            document.body.classList.remove('no-scroll');
+        }
         sideMenu.classList.add('menu-hidden');
         mainContent.classList.add('content-expanded');
     };
 
     // Evento para el botón de hamburguesa
     menuToggle.addEventListener('click', () => {
+        const isHidden = sideMenu.classList.contains('menu-hidden');
+        if (isMobile()) {
+            // Si el menú está oculto y se va a mostrar, bloqueamos el scroll del body.
+            // Si está visible y se va a ocultar, lo desbloqueamos.
+            document.body.classList.toggle('no-scroll', isHidden);
+        }
         sideMenu.classList.toggle('menu-hidden');
         mainContent.classList.toggle('content-expanded');
     });

@@ -71,9 +71,9 @@ body {
   position: fixed;
   left: 0;
   top: 56px;
-  bottom: 0; /* Asegura que el menú llegue hasta el final de la pantalla */
+  height: calc(100vh - 56px); /* Asegura que el menú llegue hasta el final de la pantalla */
   word-wrap: break-word;
-  overflow: hidden; /* Mantiene el contenido dentro del botón */
+  overflow-y: auto; /* Permite el scroll vertical si el contenido es muy largo */
   z-index: 1000;
   display: flex;
   flex-direction: column;
@@ -403,4 +403,13 @@ body.login-pagina {
     max-width: 450px;
     width: 100%;
     padding: 15px;
+}
+
+/* Clase de ayuda para bloquear el scroll del body cuando el menú está abierto en móviles */
+@media (max-width: 768px) {
+    body.no-scroll {
+        overflow: hidden;
+        position: fixed; /* Ayuda a prevenir saltos de layout en algunos navegadores */
+        width: 100%;
+    }
 }
