@@ -157,7 +157,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     document.getElementById('resFecha').value = data.fecha;
                     document.getElementById('resProveedor').value = data.proveedor;
                     document.getElementById('resMonto').value = data.monto;
-
+                    console.log(data);
                     resultadoBusqueda.classList.remove('d-none');
                 } else {
                     // Si no se encontró, mostramos una alerta de información
@@ -174,28 +174,52 @@ document.addEventListener('DOMContentLoaded', function() {
                 alertaGestion.classList.remove("d-none");
             });
         });
+    }
 
-        // --- Lógica para el botón "Sacar de Circulación" ---
-        const btnSacarCirculacion = document.getElementById('btnSacarCirculacion');
+// --- Lógica para el modal "Sacar de Circulación" ------------------------------------------------------------------------------------------
+    const modalSacarCirculacion = document.getElementById('modalSacarCirculacion');
+    if (modalSacarCirculacion) {
+        const btnConfirmarSacarCirculacion = document.getElementById('btnConfirmarSacarCirculacion');
+        const resultadoBusqueda = document.getElementById('resultadoBusquedaCheque');
+        const formularioChequeGestion = document.getElementById('formularioChequeGestion');
+        const alertaGestion = document.getElementById('alertaGestion');
+        const MSGGestion = document.getElementById('MSGGestion');
 
-        btnSacarCirculacion.addEventListener('click', function() {
-            const numeroChequeInput = document.getElementById('numeroCheque');
-            const numeroCheque = numeroChequeInput.value;
+        // Al mostrarse el modal, pre-rellenamos la fecha actual.
+        modalSacarCirculacion.addEventListener('show.bs.modal', function () {
+            const fechaInput = document.getElementById('fechaFueraCirculacion');
+            const hoy = new Date().toISOString().split('T')[0]; // Formato YYYY-MM-DD
+            fechaInput.value = hoy;
+        });
+
+        // Al hacer clic en el botón de confirmación del modal
+        btnConfirmarSacarCirculacion.addEventListener('click', function() {
+            // Recopilamos los datos directamente de la tabla de resultados
+            const numeroCheque = document.getElementById('resNumCheque').value;
+
+            // Recopilamos los datos del modal
+            const fechaFueraCirculacion = document.getElementById('fechaFueraCirculacion').value;
+            const detalles = document.getElementById('detallesSacarCirculacion').value;
 
             if (!numeroCheque) {
-                MSGGestion.textContent = "No se ha especificado un número de cheque.";
-                alertaGestion.className = "alert alert-warning d-flex align-items-center gap-2 mt-3";
-                alertaGestion.classList.remove("d-none");
+                // Este error no debería ocurrir si el modal solo se abre cuando hay un resultado,
+                // pero es una buena salvaguarda.
+                alert("Error: No se pudo encontrar el número de cheque. Por favor, busque el cheque de nuevo.");
                 return;
             }
 
-            // Enviamos el número de cheque al JSP para actualizar su estado
+            if (!fechaFueraCirculacion) {
+                alert("Por favor, especifique la fecha de retiro.");
+                return;
+            }
+
+            // Enviamos al JSP para actualizar su estado
             fetch('jsp/sacarCirculacionCheque.jsp', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
                 },
-                body: `numeroCheque=${encodeURIComponent(numeroCheque)}`
+                body: `numeroCheque=${encodeURIComponent(numeroCheque)}&fechaFueraCirculacion=${encodeURIComponent(fechaFueraCirculacion)}&detalles=${encodeURIComponent(detalles)}`
             })
             .then(response => response.text())
             .then(texto => {
@@ -207,11 +231,20 @@ document.addEventListener('DOMContentLoaded', function() {
                     // Ocultamos los resultados y reseteamos el formulario de búsqueda
                     resultadoBusqueda.classList.add('d-none');
                     formularioChequeGestion.reset();
+                    document.getElementById('detallesSacarCirculacion').value = ''; // Limpiar textarea
+
+                    // Cerramos el modal manualmente
+                    const modalInstance = bootstrap.Modal.getInstance(modalSacarCirculacion);
+                    modalInstance.hide();
                 } else {
                     throw new Error(texto || "Respuesta inesperada del servidor.");
                 }
             })
             .catch(error => {
+                // Ocultamos el modal para que el usuario pueda ver el mensaje de error principal
+                const modalInstance = bootstrap.Modal.getInstance(modalSacarCirculacion);
+                modalInstance.hide();
+
                 MSGGestion.textContent = "Error al procesar la solicitud: " + error.message;
                 alertaGestion.className = "alert alert-danger d-flex align-items-center gap-2 mt-3";
                 alertaGestion.classList.remove("d-none");
@@ -220,6 +253,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
 
+});
     
     /* -----------------------------------------
      CONVERSIÓN DE NÚMERO A LETRAS
@@ -243,7 +277,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
 
-});
 
 
 /* =====================================================

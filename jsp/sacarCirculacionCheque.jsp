@@ -12,10 +12,18 @@
     ResultSet rs = null;
 
     String numeroCheque = request.getParameter("numeroCheque");
+    String fechaFueraCirculacionStr = request.getParameter("fechaFueraCirculacion");
+    String detalles = request.getParameter("detalles");
 
     if (numeroCheque == null || numeroCheque.trim().isEmpty()) {
         response.setStatus(HttpServletResponse.SC_BAD_REQUEST); // 400 Bad Request
         out.print("Error: El número de cheque no puede estar vacío.");
+        return;
+    }
+
+    if (fechaFueraCirculacionStr == null || fechaFueraCirculacionStr.trim().isEmpty()) {
+        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        out.print("Error: La fecha de retiro no puede estar vacía.");
         return;
     }
 
@@ -27,32 +35,53 @@
         // 2. Iniciar la transacción (desactivar auto-commit)
         conn.setAutoCommit(false);
 
-        // 3. Verificar si el cheque ya fue sacado de circulación o si no existe
-        String sqlSelect = "SELECT FechaFueraCirculacion FROM cheques WHERE numeroCheque = ?";
+        // 3. Verificar si el cheque ya fue sacado de circulación previamente
+        String sqlCheck = "SELECT NumeroCheque FROM cheques_fueracirculacion WHERE NumeroCheque = ?";
+        ps = conn.prepareStatement(sqlCheck);
+        ps.setString(1, numeroCheque);
+        rs = ps.executeQuery();
+        if (rs.next()) {
+            conn.rollback();
+            response.setStatus(HttpServletResponse.SC_CONFLICT); // 409 Conflict
+            out.print("El cheque N° " + numeroCheque + " ya fue sacado de circulación previamente.");
+            return;
+        }
+        rs.close();
+        ps.close();
+
+        // 4. Obtener los datos completos del cheque original
+        String sqlSelect = "SELECT FechaEmision, Proveedor, ObjetoDeGasto, Detalles, Monto FROM cheques WHERE NumeroCheque = ?";
         ps = conn.prepareStatement(sqlSelect);
         ps.setString(1, numeroCheque);
         rs = ps.executeQuery();
 
         if (rs.next()) {
-            if (rs.getDate("FechaFueraCirculacion") != null) {
-                // El cheque ya tiene fecha, por lo tanto, ya fue sacado de circulación.
-                conn.rollback(); 
-                response.setStatus(HttpServletResponse.SC_CONFLICT); // 409 Conflict
-                out.print("El cheque N° " + numeroCheque + " ya fue sacado de circulación previamente.");
-                return;
-            }
+            // Guardamos los datos del cheque encontrado
+            Date fechaEmision = rs.getDate("FechaEmision");
+            String proveedor = rs.getString("Proveedor");
+            String objetoGasto = rs.getString("ObjetoDeGasto");
+            String detalleCheque = rs.getString("Detalles");
+            double monto = rs.getDouble("Monto");
+            ps.close(); // Cerramos el PreparedStatement de la consulta
 
-            // 4. Si el cheque existe y no ha sido sacado, proceder a actualizarlo.
-            String sqlUpdate = "UPDATE cheques SET FechaFueraCirculacion = ? WHERE numeroCheque = ?";
-            ps.close(); // Cerrar el PreparedStatement anterior
-            ps = conn.prepareStatement(sqlUpdate);
-            ps.setDate(1, java.sql.Date.valueOf(LocalDate.now()));
-            ps.setString(2, numeroCheque);
+            // 5. Insertar el registro en la tabla de historial 'cheques_fueracirculacion'
+            String sqlInsert = "INSERT INTO cheques_fueracirculacion (NumeroCheque, FechaEmision, Proveedor, ObjetoDeGasto, Detalle, Monto, FechaFueraCirculacion, Observacion) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            ps = conn.prepareStatement(sqlInsert);
+            ps.setString(1, numeroCheque);
+            ps.setDate(2, fechaEmision);
+            ps.setString(3, proveedor);
+            ps.setString(4, objetoGasto);
+            ps.setString(5, detalleCheque);
+            ps.setDouble(6, monto);
+            ps.setDate(7, java.sql.Date.valueOf(fechaFueraCirculacionStr));
+            ps.setString(8, detalles); // 'detalles' del modal va a la columna 'Observacion'
+            int filasInsert = ps.executeUpdate();
+            ps.close();
 
-            int filasAfectadas = ps.executeUpdate();
-            if (filasAfectadas > 0) {
-                conn.commit();
-                out.print("OK");
+            if (filasInsert > 0) {
+                // 6. Si la inserción fue exitosa, confirmar
+                conn.commit(); // <-- Confirmar transacción
+                out.print("OK"); // <-- Enviar respuesta exitosa al cliente
             }
         } else {
             // Si no se encontró el cheque en la consulta inicial.

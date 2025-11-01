@@ -115,7 +115,7 @@
 
                                 <div class="col-md-2">
                                     <label for="monto" class="form-label">Monto</label>
-                                    <input id="monto" name="monto" type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '')"
+                                    <input id="monto" name="monto" type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1')"
                                     inputmode="numeric" step="0.01" class="" placeholder="0.00"
                                     required maxlength="10">
                                 </div>
@@ -164,7 +164,7 @@
                                     <th>Fecha de Emisión</th>
                                     <th>Proveedor</th>
                                     <th>Monto</th>
-                                    <th>Acción</th>
+                                    <th>Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -179,11 +179,11 @@
                                                 <span class="material-icons">visibility</span>
                                             </button>
 
-                                            <button id="btnSacarCirculacion" class="btn btn-warning btn-sm d-flex align-items-center justify-content-center" title="Sacar de Circulación">
+                                            <button id="btnSacarCirculacion" type="button" class="btn btn-warning btn-sm d-flex align-items-center justify-content-center" title="Sacar de Circulación" data-bs-toggle="modal" data-bs-target="#modalSacarCirculacion">
                                                 <span class="material-icons">remove_circle</span>
                                             </button>
 
-                                            <button id="anular" class="btn btn-danger btn-sm d-flex align-items-center justify-content-center" title="Anular Cheque">
+                                            <button id="anular" class="btn btn-danger btn-sm d-flex align-items-center justify-content-center" title="Anular Cheque" data-bs-toggle="modal" data-bs-target="#modalAnular">
                                                 <span class="material-icons">cancel</span>
                                             </button>
                                         </div>
@@ -198,6 +198,42 @@
         </main>
     </div>
     
+    <!-- Modal para Sacar de Circulación -->
+    <div class="modal fade" id="modalSacarCirculacion" tabindex="-1" aria-labelledby="modalSacarCirculacionLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalSacarCirculacionLabel">Sacar Cheque de Circulación</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formSacarCirculacion">
+                        <div class="mb-3">
+                            <label for="fechaFueraCirculacion" class="form-label">Fecha de Retiro</label>
+                            <input type="date" class="form-control" id="fechaFueraCirculacion" name="fechaFueraCirculacion" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="detallesSacarCirculacion" class="form-label">Detalles / Motivo</label>
+                            <textarea class="form-control" id="detallesSacarCirculacion" name="detallesSacarCirculacion" rows="3" placeholder="Ej: Cheque perdido, error en la emisión, etc."></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" id="btnConfirmarSacarCirculacion" class="btn btn-warning">Confirmar Retiro</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para anular -->
+     <div class="modal fade" id="modalAnular" tabindex="-1" aria-labelledby="modalAnularLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalAnularLabel">Anular Cheque</h5>
+     </div>
+
     <!-- verificar sesion activa -->
     <script src="js/Sesion.js"></script>
 
