@@ -180,7 +180,7 @@ body {
 
 .contenedor{
     max-width: 100%;
-    margin: 0; /* Quitamos el margen anterior */
+    margin: 0; 
     padding: 25px 35px;
     
     background: var(--contenedor-fondo);
@@ -241,8 +241,9 @@ body {
    Estilo para los campos de solo lectura dentro de las tablas.*/
 table .inputEnTabla {
   font-family: inherit;
-  width: 50%;
-  max-width: 60%;
+  width: 100%;
+  max-width: 100%;
+  
   border: none;
   /*border-bottom: 2px solid #9b9b9b;*/
   outline: 0;
@@ -304,6 +305,8 @@ table .inputEnTabla:required, table .inputEnTabla:invalid {
     color: var(--tabla-encabezado-texto-color);
     font-weight: bold;
 }
+
+
 
 /* Estilos para botones con íconos ---------------------------------------------------------------------*/
 .btn .material-icons {
