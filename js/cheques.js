@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', function() {
         fechaEmisionInput.value = hoy; 
     }
 
+
     /* -----------------------------------------
     // OBTENER PROVEEDORES
      -----------------------------------------*/
@@ -115,7 +116,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 alerta.classList.remove("d-none");
             })
             .finally(() => {
-                actualizarNumeroCheque(); // Asegura que el campo se actualice con el nuevo número
+                
             });
         });
     }
@@ -157,7 +158,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     document.getElementById('resFecha').value = data.fecha;
                     document.getElementById('resProveedor').value = data.proveedor;
                     document.getElementById('resMonto').value = data.monto;
-                    console.log(data);
+                    
                     resultadoBusqueda.classList.remove('d-none');
                 } else {
                     // Si no se encontró, mostramos una alerta de información
@@ -192,8 +193,10 @@ document.addEventListener('DOMContentLoaded', function() {
             fechaInput.value = hoy;
         });
 
-        // Al hacer clic en el botón de confirmación del modal
-        btnConfirmarSacarCirculacion.addEventListener('click', function() {
+        // Al enviar el formulario del modal
+        document.getElementById('formSacarCirculacion').addEventListener('submit', function(e) {
+            e.preventDefault(); // Evitamos el envío tradicional del formulario
+
             // Recopilamos los datos directamente de la tabla de resultados
             const numeroCheque = document.getElementById('resNumCheque').value;
 
@@ -201,15 +204,33 @@ document.addEventListener('DOMContentLoaded', function() {
             const fechaFueraCirculacion = document.getElementById('fechaFueraCirculacion').value;
             const detalles = document.getElementById('detallesSacarCirculacion').value;
 
+            const modalInstance = bootstrap.Modal.getInstance(modalSacarCirculacion);
+
             if (!numeroCheque) {
                 // Este error no debería ocurrir si el modal solo se abre cuando hay un resultado,
                 // pero es una buena salvaguarda.
-                alert("Error: No se pudo encontrar el número de cheque. Por favor, busque el cheque de nuevo.");
+                modalInstance.hide();
+                MSGGestion.textContent = "Error: No se pudo encontrar el número de cheque. Por favor, busque el cheque de nuevo.";
+                alertaGestion.className = "alert alert-danger d-flex align-items-center gap-2 mt-3";
+                alertaGestion.classList.remove("d-none");
                 return;
             }
 
             if (!fechaFueraCirculacion) {
-                alert("Por favor, especifique la fecha de retiro.");
+                // Podríamos mostrar un mensaje dentro del modal, pero por consistencia lo mostramos fuera.
+                modalInstance.hide();
+                MSGGestion.textContent = "Por favor, especifique la fecha de retiro.";
+                alertaGestion.className = "alert alert-warning d-flex align-items-center gap-2 mt-3";
+                alertaGestion.classList.remove("d-none");
+                return;
+            }
+
+            if (!detalles.trim()) {
+                // Ocultamos el modal para mostrar la alerta principal.
+                modalInstance.hide();
+                MSGGestion.textContent = "Por favor, ingrese los detalles o el motivo para sacar el cheque de circulación.";
+                alertaGestion.className = "alert alert-warning d-flex align-items-center gap-2 mt-3";
+                alertaGestion.classList.remove("d-none");
                 return;
             }
 
@@ -234,8 +255,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     document.getElementById('detallesSacarCirculacion').value = ''; // Limpiar textarea
 
                     // Cerramos el modal manualmente
-                    const modalInstance = bootstrap.Modal.getInstance(modalSacarCirculacion);
-                    modalInstance.hide();
+                    modalInstance.hide(); // Ya está definida arriba
                 } else {
                     throw new Error(texto || "Respuesta inesperada del servidor.");
                 }
@@ -243,8 +263,7 @@ document.addEventListener('DOMContentLoaded', function() {
             .catch(error => {
                 // Ocultamos el modal para que el usuario pueda ver el mensaje de error principal
                 const modalInstance = bootstrap.Modal.getInstance(modalSacarCirculacion);
-                modalInstance.hide();
-
+                if (modalInstance) modalInstance.hide();
                 MSGGestion.textContent = "Error al procesar la solicitud: " + error.message;
                 alertaGestion.className = "alert alert-danger d-flex align-items-center gap-2 mt-3";
                 alertaGestion.classList.remove("d-none");
@@ -252,6 +271,118 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // --- Lógica para el modal "Anular Cheque" ------------------------------------------------------------------------------------------
+    const modalAnular = document.getElementById('modalAnular');
+    if (modalAnular) {
+        const fechaAnulacionInput = document.getElementById('fechaAnulacion');
+        const fechaEmisionAnularInput = document.getElementById('fechaEmisionAnular');
+        const montoAnularInput = document.getElementById('MontoAnular');
+        const mensajeMontoAnular = document.getElementById('MSGmontoAnular');
+        const btnConfirmarAnular = document.getElementById('btnConfirmarAnulacion');
+        
+        // Referencias a los elementos de alerta en la pestaña de Gestión
+        const resultadoBusqueda = document.getElementById('resultadoBusquedaCheque');
+        const alertaGestion = document.getElementById('alertaGestion');
+        const MSGGestion = document.getElementById('MSGGestion');
+
+
+        // Al mostrarse el modal, pre-rellenamos la fecha de emisión y la fecha actual para la anulación.
+        modalAnular.addEventListener('show.bs.modal', function () {
+            // 1. Obtener valores de la tabla de resultados
+            const fechaEmisionDesdeTabla = document.getElementById('resFecha').value;
+            const montoDesdeTabla = document.getElementById('resMonto').value;
+            
+            // 2. Asignar la fecha de emisión al input del modal (solo lectura)
+            fechaEmisionAnularInput.value = fechaEmisionDesdeTabla;
+
+            // 3. Establecer la fecha actual por defecto en el campo de fecha de anulación
+            const hoy = new Date().toISOString().split('T')[0]; // Formato YYYY-MM-DD
+            fechaAnulacionInput.value = hoy;
+
+            // 4. Lógica de comparación de fechas para el monto
+            const fechaEmision = new Date(fechaEmisionDesdeTabla + 'T00:00:00'); // Añadir hora para evitar problemas de zona horaria
+            const fechaAnulacion = new Date(hoy + 'T00:00:00');
+
+            // Comparamos si el mes y el año son los mismos
+            if (fechaEmision.getMonth() === fechaAnulacion.getMonth() &&
+                fechaEmision.getFullYear() === fechaAnulacion.getFullYear()) {
+                
+                // Si es el mismo mes, el monto es 0
+                montoAnularInput.value = "0.00";
+                mensajeMontoAnular.textContent = "Anulado en el mismo mes de emisión.";
+                mensajeMontoAnular.style.color = 'green'; // Opcional: estilo visual
+
+            } else {
+                // Si es un mes diferente, se usa el monto original del cheque
+                montoAnularInput.value = montoDesdeTabla;
+                mensajeMontoAnular.textContent = "Anulado en un mes posterior a la emisión.";
+                mensajeMontoAnular.style.color = 'orange'; // Opcional: estilo visual
+            }
+
+            // Limpiamos cualquier listener anterior para evitar ejecuciones múltiples
+            const newBtn = btnConfirmarAnular.cloneNode(true);
+            btnConfirmarAnular.parentNode.replaceChild(newBtn, btnConfirmarAnular);
+
+            document.getElementById('formAnular').addEventListener('submit', function(e) {
+                e.preventDefault(); // Evitamos el envío tradicional del formulario
+
+                // 1. Recolectar datos
+                const numeroCheque = document.getElementById('resNumCheque').value;
+                const fechaAnulacion = fechaAnulacionInput.value;
+                const motivoAnulacion = document.getElementById('detallesAnulacion').value;
+                const montoAnular = montoAnularInput.value; // Ya está en el formulario
+
+                if (!fechaAnulacion) {
+                    alert("Por favor, especifique la fecha de anulación.");
+                    return;
+                }
+
+                // 2. Preparar datos para enviar
+                const datosParaAnular = new URLSearchParams();
+                datosParaAnular.append('numeroCheque', numeroCheque);
+                datosParaAnular.append('fechaAnulacion', fechaAnulacion);
+                datosParaAnular.append('motivoAnulacion', motivoAnulacion);
+                datosParaAnular.append('montoAnular', montoAnular);
+
+                // 3. Enviar al JSP
+                fetch('jsp/anularCheque.jsp', {
+                    method: 'POST',
+                    body: datosParaAnular
+                })
+                .then(response => response.text())
+                .then(texto => {
+                    if (texto.trim() === "OK") {
+                        // Cerramos el modal
+                        const modalInstance = bootstrap.Modal.getInstance(modalAnular);
+                        modalInstance.hide();
+
+                        // Mostramos mensaje de éxito en la pestaña de Gestión
+                        MSGGestion.textContent = `Cheque N° ${numeroCheque} anulado exitosamente.`;
+                        alertaGestion.className = "alert alert-success d-flex align-items-center gap-2 mt-3";
+                        alertaGestion.classList.remove("d-none");
+
+                        // Ocultamos la tabla de resultados y limpiamos el formulario de búsqueda
+                        resultadoBusqueda.classList.add('d-none');
+                        document.getElementById('formularioChequeGestion').reset();
+
+                    } else {
+                        throw new Error(texto || "Respuesta inesperada del servidor.");
+                    }
+                })
+                .catch(error => {
+                    // Cerramos el modal para mostrar el error en la página principal
+                    const modalInstance = bootstrap.Modal.getInstance(modalAnular);
+                    modalInstance.hide();
+
+                    // Mostramos el error en la alerta de Gestión
+                    MSGGestion.textContent = "Error al anular el cheque: " + error.message;
+                    alertaGestion.className = "alert alert-danger d-flex align-items-center gap-2 mt-3";
+                    alertaGestion.classList.remove("d-none");
+                });
+            });
+        });
+
+    }
 
 });
     

@@ -141,14 +141,18 @@
                      <!-- Gestión -->
                      <div class="tab-pane fade" id="Gestion">
                         <div class="row mb-3">
-                            <form class="formulario" id="formularioChequeGestion">
-                                <div class="col-md-3 d-flex gap-1">
+                            <form class="formulario" id="formularioChequeGestion" >
+                                <div class="d-flex flex-wrap align-items-center gap-3">
+                                    <!-- Campo de búsqueda -->
                                     <input id="numeroCheque" name="numeroCheque" type="text" class="" maxlength="10"
-                                    oninput="this.value = this.value.replace(/[^0-9]/g, '')" inputmode="numeric" required placeholder="Número de Cheque">
-
-                                    <button type="submit" class="btn btn-info d-flex align-items-center" style="height: 55px;">
+                                    oninput="this.value = this.value.replace(/[^0-9]/g, '')" inputmode="numeric" required placeholder="Número de Cheque" style="width: 200px;">
+                                    
+                                    <button type="submit" class="btn btn-info d-flex align-items-center justify-content-center" style="height: 55px;">
                                         <span class="material-icons">search</span>
                                     </button>
+
+                                    <!-- Checkboxes con estilo de Bootstrap -->
+                                    
                                 </div>
                             </form>
                         </div>
@@ -156,6 +160,7 @@
                         <div id="alertaGestion" class="alert d-none d-flex align-items-center gap-2 mt-3" role="alert">
                             <p id="MSGGestion" class="m-0"></p>
                         </div>
+
                         <div class="table-responsive">
                         <table id="resultadoBusquedaCheque" class="table table-bordered align-middle text-start tabla-gestion">
                             <thead>
@@ -169,11 +174,11 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td><input type="text" id="resNumCheque" class="inputEnTabla" readonly></td>
-                                    <td><input type="text" id="resFecha" class="inputEnTabla" readonly></td>
-                                    <td><input type="text" id="resProveedor" class="inputEnTabla" readonly></td>
-                                    <td><input type="text" id="resMonto" class="inputEnTabla" readonly></td>
-                                    <td>
+                                    <td data-label="Num. Cheque"><input type="text" id="resNumCheque" class="inputEnTabla" readonly></td>
+                                    <td data-label="Fecha de Emisión"><input type="text" id="resFecha" class="inputEnTabla" readonly></td>
+                                    <td data-label="Proveedor"><input type="text" id="resProveedor" class="inputEnTabla" readonly></td>
+                                    <td data-label="Monto"><input type="text" id="resMonto" class="inputEnTabla" readonly></td>
+                                    <td data-label="Acciones">
                                         <div class="d-flex gap-1">
                                             <button id="VerDetalles" class="btn btn-info btn-sm d-flex align-items-center justify-content-center" title="Ver Detalles">
                                                 <span class="material-icons">visibility</span>
@@ -200,8 +205,8 @@
     
     <!-- Modal para Sacar de Circulación -->
     <div class="modal fade" id="modalSacarCirculacion" tabindex="-1" aria-labelledby="modalSacarCirculacionLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content formulario">
                 <div class="modal-header">
                     <h5 class="modal-title" id="modalSacarCirculacionLabel">Sacar Cheque de Circulación</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -210,17 +215,16 @@
                     <form id="formSacarCirculacion">
                         <div class="mb-3">
                             <label for="fechaFueraCirculacion" class="form-label">Fecha de Retiro</label>
-                            <input type="date" class="form-control" id="fechaFueraCirculacion" name="fechaFueraCirculacion" required>
+                            <input type="date" class="" id="fechaFueraCirculacion" name="fechaFueraCirculacion" required>
                         </div>
                         <div class="mb-3">
                             <label for="detallesSacarCirculacion" class="form-label">Detalles / Motivo</label>
-                            <textarea class="form-control" id="detallesSacarCirculacion" name="detallesSacarCirculacion" rows="3" placeholder="Ej: Cheque perdido, error en la emisión, etc."></textarea>
+                            <textarea class="" id="detallesSacarCirculacion" name="detallesSacarCirculacion" rows="3" placeholder="Ej: Cheque perdido, error en la emisión, etc." required></textarea>
                         </div>
+                    
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" id="btnConfirmarSacarCirculacion" class="btn btn-warning">Confirmar Retiro</button>
                     </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" id="btnConfirmarSacarCirculacion" class="btn btn-warning">Confirmar Retiro</button>
                 </div>
             </div>
         </div>
@@ -228,12 +232,47 @@
 
     <!-- Modal para anular -->
      <div class="modal fade" id="modalAnular" tabindex="-1" aria-labelledby="modalAnularLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content formulario">
                 <div class="modal-header">
                     <h5 class="modal-title" id="modalAnularLabel">Anular Cheque</h5>
-     </div>
-
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formAnular">
+                        <!-- Fila para las fechas -->
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="fechaEmisionAnular" class="form-label">Fecha de Emisión</label>
+                                <input type="date" class="" id="fechaEmisionAnular" name="fechaEmisionAnular" required readonly>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="fechaAnulacion" class="form-label">Fecha de Anulación</label>
+                                <input type="date" class="" id="fechaAnulacion" name="fechaAnulacion" required readonly>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="MontoAnular" class="form-label">Monto</label>
+                                <input type="text" class="" id="MontoAnular" name="MontoAnular" readonly>
+                            </div>
+                            <div class="col-md-6 d-flex align-items-center" id ="MensajeMontoAnular">
+                                <p id="MSGmontoAnular" class="form-text m-0"></p>
+                            </div>
+                        </div>
+                        <!-- Fila para los detalles -->
+                        <div class="mb-3">
+                            <label for="detallesAnulacion" class="form-label">Detalles / Motivo</label>
+                            <textarea class="" id="detallesAnulacion" name="detallesAnulacion" rows="3" required></textarea>
+                        </div>
+                
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" id="btnConfirmarAnulacion" class="btn btn-danger">Confirmar Anulación</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- verificar sesion activa -->
     <script src="js/Sesion.js"></script>
 

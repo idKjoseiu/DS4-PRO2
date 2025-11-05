@@ -35,7 +35,7 @@
                      "JOIN proveedores p ON c.Proveedor = p.codigo " +
                      "WHERE c.NumeroCheque = ?";
         ps = conn.prepareStatement(sql);
-        ps.setString(1, numeroCheque); // Asignar el valor al '?'
+        ps.setString(1, numeroCheque); 
 
         // 4. Ejecutar la consulta
         rs = ps.executeQuery();

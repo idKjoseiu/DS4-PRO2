@@ -36,6 +36,44 @@
     --tabla-encabezado-texto-color: #212529;
 }
 
+/*---------------------------------------------------------------------------------*/
+/* MODO OSCURO */
+/*---------------------------------------------------------------------------------*/
+body.dark-mode-active {
+    /* Paleta de colores para el modo oscuro */
+    --color-fondo: #1a1f24;
+    --texto-primario: #e0e0e0;
+    --texto-secundario: #adb5bd;
+    /* --acento-primario se mantiene */
+    /* --acento-secundario se mantiene */
+
+    --encabezado-fondo: #212529;
+    --encabezado-borde-color: #343a40;
+
+    --menu-fondo: #212529;
+    --menu-enlace-color: #e0e0e0;
+    --menu-enlace-borde-color-hover: var(--acento-primario);
+    --menu-enlace-color-hover: white;
+    --menu-enlace-fondo-activo: var(--acento-primario);
+    --menu-enlace-color-activo: #1a1f24;
+    --menu-enlace-indicador-color: #637185;
+
+    --contenedor-fondo: #2c3034;
+    --contenedor-borde-color: #212529;
+    --contenedor-sombra: rgba(0, 0, 0, 0.4) 0px 20px 30px -10px;
+
+    --input-fondo: #343a40;
+    --input-borde-color: #495057;
+    --input-borde-color-hover: #6c757d;
+    /* --input-borde-color-focus se mantiene (usa --acento-primario) */
+    --input-texto-color: #e0e0e0;
+
+    --tabla-borde-color: #495057;
+    --tabla-fila-borde-color: #495057;
+    --tabla-encabezado-fondo: #343a40;
+    --tabla-encabezado-texto-color: #ffffff;
+}
+
 /* Estructura principal y encabezado */
 body {
     background-color: var(--color-fondo);
@@ -306,6 +344,43 @@ table .inputEnTabla:required, table .inputEnTabla:invalid {
     font-weight: bold;
 }
 
+/*---------------------------------------------------------------------------------*/
+/* ESTILOS PARA TABLA DE GESTIÓN RESPONSIVA (CHEQUES.HTML)
+/*---------------------------------------------------------------------------------*/
+@media (max-width: 768px) {
+    /* Ocultamos los encabezados originales de la tabla en móviles */
+    .tabla-gestion thead {
+        display: none;
+    }
+
+    /* Convertimos la tabla, el cuerpo, las filas y las celdas en bloques */
+    .tabla-gestion, .tabla-gestion tbody, .tabla-gestion tr, .tabla-gestion td {
+        display: block;
+        width: 100%;
+    }
+
+    /* Añadimos un poco de espacio entre las "filas" que ahora son tarjetas */
+    .tabla-gestion tr {
+        margin-bottom: 1rem;
+        border: 1px solid var(--tabla-borde-color);
+        border-radius: 8px;
+        padding: 1rem;
+    }
+
+    /* Usamos el atributo data-label para mostrar el encabezado de cada celda */
+    .tabla-gestion td::before {
+        content: attr(data-label);
+        font-weight: bold;
+        display: block;
+        margin-bottom: .25rem;
+        color: var(--texto-secundario);
+    }
+
+    /* Centramos los botones de acciones */
+    .tabla-gestion td[data-label="Acciones"] .d-flex {
+        justify-content: flex-start; /* O 'center' si prefieres centrarlos */
+    }
+}
 
 
 /* Estilos para botones con íconos ---------------------------------------------------------------------*/
@@ -320,43 +395,7 @@ table .inputEnTabla:required, table .inputEnTabla:invalid {
 }
 
 
-/*---------------------------------------------------------------------------------*/
-/* MODO OSCURO */
-/*---------------------------------------------------------------------------------*/
-body.dark-mode-active {
-    /* Paleta de colores para el modo oscuro */
-    --color-fondo: #1a1f24;
-    --texto-primario: #e0e0e0;
-    --texto-secundario: #adb5bd;
-    /* --acento-primario se mantiene */
-    /* --acento-secundario se mantiene */
 
-    --encabezado-fondo: #212529;
-    --encabezado-borde-color: #343a40;
-
-    --menu-fondo: #212529;
-    --menu-enlace-color: #e0e0e0;
-    --menu-enlace-borde-color-hover: var(--acento-primario);
-    --menu-enlace-color-hover: white;
-    --menu-enlace-fondo-activo: var(--acento-primario);
-    --menu-enlace-color-activo: #1a1f24;
-    --menu-enlace-indicador-color: #637185;
-
-    --contenedor-fondo: #2c3034;
-    --contenedor-borde-color: #212529;
-    --contenedor-sombra: rgba(0, 0, 0, 0.4) 0px 20px 30px -10px;
-
-    --input-fondo: #343a40;
-    --input-borde-color: #495057;
-    --input-borde-color-hover: #6c757d;
-    /* --input-borde-color-focus se mantiene (usa --acento-primario) */
-    --input-texto-color: #e0e0e0;
-
-    --tabla-borde-color: #495057;
-    --tabla-fila-borde-color: #495057;
-    --tabla-encabezado-fondo: #343a40;
-    --tabla-encabezado-texto-color: #ffffff;
-}
 
 /* Estilos para el select q */
 body.dark-mode-active .form-select {
@@ -413,3 +452,4 @@ body.login-pagina {
         width: 100%;
     }
 }
+
