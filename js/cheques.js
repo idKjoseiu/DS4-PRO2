@@ -127,54 +127,141 @@ document.addEventListener('DOMContentLoaded', function() {
     const formularioChequeGestion = document.getElementById('formularioChequeGestion');
 
     if (formularioChequeGestion) {
-        const resultadoBusqueda = document.getElementById('resultadoBusquedaCheque');
+        const tablaResultados = document.getElementById('resultadoBusquedaCheque');
+        const cuerpoTabla = tablaResultados.querySelector('tbody');
         const alertaGestion = document.getElementById('alertaGestion');
         const MSGGestion = document.getElementById('MSGGestion');
+        const tituloGestion = document.getElementById('tituloGestion');
+        const filtrosCheque = document.querySelectorAll('input[name="filtroCheque"]');
 
-        formularioChequeGestion.addEventListener('submit', function(e) {
-            e.preventDefault(); // Evitamos que la página se recargue
-
+        function buscarCheques(esBusquedaPorNumero = false) {
             // Ocultamos resultados y alertas anteriores
-            resultadoBusqueda.classList.add('d-none');
+            tablaResultados.classList.add('d-none');
             alertaGestion.classList.add('d-none');
+            if (tituloGestion) tituloGestion.classList.add('d-none');
 
             const datosFormulario = new FormData(formularioChequeGestion);
+            const filtroSeleccionado = document.querySelector('input[name="filtroCheque"]:checked').value;
+            datosFormulario.set('filtroCheque', filtroSeleccionado); // Asegurarnos que el filtro se envíe
 
-            // Enviamos el número de cheque al JSP para buscarlo
-            fetch('jsp/obtenerCheque.jsp', {
+            // El endpoint podría cambiar dependiendo del filtro
+            let url;
+            if (filtroSeleccionado === 'Emitidos') {
+                url = 'jsp/obtenerCheque.jsp';
+            } else if (filtroSeleccionado === 'Anulados') {
+                url = 'jsp/obtenerChequesAnulados.jsp';
+            } else if (filtroSeleccionado === 'FueraDeCirculacion') {
+                url = 'jsp/obtenerChequesFC.jsp';
+            }
+            // if (filtroSeleccionado === 'Anulados') { url = 'jsp/obtenerChequesAnulados.jsp'; }
+
+            fetch(url, {
                 method: 'POST',
                 body: new URLSearchParams(datosFormulario)
             })
             .then(response => {
                 if (!response.ok) {
-                    throw new Error(`Error del servidor: ${response.statusText}`);
+                    return response.text().then(text => { 
+                        throw new Error(text || `Error del servidor: ${response.statusText}`); 
+                    });
                 }
-                return response.json(); // Esperamos una respuesta JSON
+                // Si la respuesta puede ser JSON o texto (para "no encontrado")
+                return response.text().then(text => {
+                    try {
+                        return JSON.parse(text);
+                    } catch (e) {
+                        return { encontrado: false, mensaje: text };
+                    }
+                });
             })
             .then(data => {
+                cuerpoTabla.innerHTML = ''; // Limpiar resultados anteriores
+
                 if (data.encontrado) {
-                    // Si se encontró, llenamos los campos y mostramos la sección
-                    document.getElementById('resNumCheque').value = data.numeroCheque;
-                    document.getElementById('resFecha').value = data.fecha;
-                    document.getElementById('resProveedor').value = data.proveedor;
-                    document.getElementById('resMonto').value = data.monto;
-                    
-                    resultadoBusqueda.classList.remove('d-none');
+                    const cheques = data.resultados || [data]; // Unificar la respuesta a un array
+                    console.log('Cheques encontrados:', cheques);
+                    // Actualizar y mostrar el título según el filtro
+                    if (tituloGestion) {
+                        let textoTitulo = '';
+                        switch (filtroSeleccionado) {
+                            case 'Emitidos':
+                                textoTitulo = 'Cheques Emitidos';
+                                break;
+                            case 'Anulados':
+                                textoTitulo = 'Cheques Anulados';
+                                break;
+                            case 'FueraDeCirculacion':
+                                textoTitulo = 'Cheques Fuera de Circulación';
+                                break;
+                        }
+                        tituloGestion.textContent = textoTitulo;
+                        tituloGestion.classList.remove('d-none');
+                    }
+
+
+                    cheques.forEach(cheque => {
+                        // Asegurarnos de que el número de cheque se muestre como un entero
+                        if (cheque.numeroCheque) {
+                            cheque.numeroCheque = parseInt(cheque.numeroCheque, 10);
+                        }
+
+                        const fila = document.createElement('tr');
+
+                        // Ocultar/mostrar botones según el estado del cheque
+                        const esEmitido = filtroSeleccionado === 'Emitidos';
+                        const botonesAccion = `
+                            <div class="d-flex gap-1">
+                                <button class="btn btn-info btn-sm d-flex align-items-center justify-content-center" title="Ver Detalles">
+                                    <span class="material-icons">visibility</span>
+                                </button>
+                                <button type="button" class="btn btn-warning btn-sm d-flex align-items-center justify-content-center" title="Sacar de Circulación" data-bs-toggle="modal" data-bs-target="#modalSacarCirculacion" style="display: ${esEmitido ? 'flex' : 'none'};">
+                                    <span class="material-icons">remove_circle</span>
+                                </button>
+                                <button class="btn btn-danger btn-sm d-flex align-items-center justify-content-center" title="Anular Cheque" data-bs-toggle="modal" data-bs-target="#modalAnular" style="display: ${esEmitido ? 'flex' : 'none'};">
+                                    <span class="material-icons">cancel</span>
+                                </button>
+                            </div>
+                        `;
+
+                        fila.innerHTML = `
+                            <td data-label="Num. Cheque"><input type="text" class="inputEnTabla resNumCheque" value="${cheque.numeroCheque}" readonly></td>
+                            <td data-label="Fecha de Emisión"><input type="text" class="inputEnTabla resFecha" value="${cheque.fecha}" readonly></td>
+                            <td data-label="Proveedor"><input type="text" class="inputEnTabla resProveedor" value="${cheque.proveedor}" readonly></td>
+                            <td data-label="Monto"><input type="text" class="inputEnTabla resMonto" value="${cheque.monto}" readonly></td>
+                            <td data-label="Acciones">${botonesAccion}</td>
+                        `;
+                        cuerpoTabla.appendChild(fila);
+                    });
+
+                    tablaResultados.classList.remove('d-none');
                 } else {
-                    // Si no se encontró, mostramos una alerta de información
-                    MSGGestion.textContent = data.mensaje || "No se encontró el cheque especificado.";
+                    // Si no se encontraron resultados, mostramos una alerta
+                    MSGGestion.textContent = data.mensaje || "No se encontraron cheques con los criterios seleccionados.";
                     alertaGestion.className = "alert alert-info d-flex align-items-center gap-2 mt-3";
                     alertaGestion.classList.remove("d-none");
                 }
             })
             .catch(error => {
-                // Si hay un error en la comunicación o en el parseo, mostramos una alerta de error
                 console.error('Error al buscar cheque:', error);
                 MSGGestion.textContent = "Error al buscar el cheque: " + error.message;
                 alertaGestion.className = "alert alert-danger d-flex align-items-center gap-2 mt-3";
                 alertaGestion.classList.remove("d-none");
             });
+        }
+
+        // Evento para el envío del formulario (búsqueda por número)
+        formularioChequeGestion.addEventListener('submit', function(e) {
+            e.preventDefault();
+            buscarCheques(true);
         });
+
+        // Evento para el cambio en los filtros de radio
+        filtrosCheque.forEach(radio => {
+            radio.addEventListener('change', () => buscarCheques(false));
+        });
+
+        // Cargar la lista de cheques emitidos por defecto al iniciar
+        buscarCheques(false);
     }
 
 // --- Lógica para el modal "Sacar de Circulación" ------------------------------------------------------------------------------------------

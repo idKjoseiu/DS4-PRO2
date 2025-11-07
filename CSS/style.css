@@ -453,3 +453,49 @@ body.login-pagina {
     }
 }
 
+/*---------------------------------------------------------------------------------*/
+/* ESTILOS PARA RADIO BUTTONS PERSONALIZADOS (CHEQUES.HTML)
+/* From Uiverse.io by Yaya12085 - Adaptado para el tema
+/*---------------------------------------------------------------------------------*/
+.check-inputs {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  display: flex; /* Asegura que el contenedor se comporte como flex item */
+  border-radius: 0.5rem;
+  background-color: var(--menu-fondo);
+  box-sizing: border-box;
+  box-shadow: 0 0 0px 1px rgba(0, 0, 0, 0.06);
+  padding: 0.25rem;
+  width: 300px;
+  max-width: 100%; /* Asegura que no se desborde en pantallas pequeñas */
+  font-size: 14px;
+}
+
+.check-inputs .radio {
+  flex: 1 1 auto;
+  text-align: center;
+}
+
+.check-inputs .radio input {
+  display: none;
+}
+
+.check-inputs .radio .name {
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+  border: none;
+  padding: .5rem 0;
+  color: var(--texto-secundario);
+  transition: all .15s ease-in-out;
+}
+
+.check-inputs .radio input:checked + .name {
+  background-color: var(--color-fondo);
+  font-weight: 600;
+  color: var(--texto-primario);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}

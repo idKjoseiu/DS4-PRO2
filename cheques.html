@@ -83,7 +83,8 @@
                             <div class="row mb-3">
                                 <div class="col-md-3">
                                     <label for="NummeroCheque" class="form-label">Número de Cheque</label>
-                                    <input id="NummeroCheque" name="NummeroCheque" type="text" class="" maxlength="5">
+                                    <input id="NummeroCheque" name="NummeroCheque" type="text" class="" maxlength="5"
+                                    oninput="this.value = this.value.replace(/[^0-9]/g, '')" inputmode="numeric" required>
                                 </div>
                                 <div class="col-md-2">
                                     <label for="fechaEmision" class="form-label">Fecha de Emisión</label>
@@ -147,12 +148,26 @@
                                     <input id="numeroCheque" name="numeroCheque" type="text" class="" maxlength="10"
                                     oninput="this.value = this.value.replace(/[^0-9]/g, '')" inputmode="numeric" required placeholder="Número de Cheque" style="width: 200px;">
                                     
-                                    <button type="submit" class="btn btn-info d-flex align-items-center justify-content-center" style="height: 55px;">
+                                    <button type="submit" class="btn btn-info d-flex align-items-center justify-content-center" style="height: 50px;">
                                         <span class="material-icons">search</span>
                                     </button>
 
                                     <!-- Checkboxes con estilo de Bootstrap -->
-                                    
+                                    <div class="check-inputs">
+                                        <label class="radio">
+                                          <input type="radio" name="filtroCheque" value="Emitidos" checked="">
+                                          <span class="name">Emitidos</span>
+                                        </label>
+                                        <label class="radio">
+                                          <input type="radio" name="filtroCheque" value="FueraDeCirculacion">
+                                          <span class="name">Fuera de Circulación</span>
+                                        </label>
+                                            
+                                        <label class="radio">
+                                          <input type="radio" name="filtroCheque" value="Anulados">
+                                          <span class="name">Anulados</span>
+                                        </label>
+                                    </div>
                                 </div>
                             </form>
                         </div>
@@ -160,6 +175,9 @@
                         <div id="alertaGestion" class="alert d-none d-flex align-items-center gap-2 mt-3" role="alert">
                             <p id="MSGGestion" class="m-0"></p>
                         </div>
+
+                        <!-- Título dinámico para la tabla de gestión -->
+                        <h5 id="tituloGestion" class="mt-4 mb-3 d-none"></h5>
 
                         <div class="table-responsive">
                         <table id="resultadoBusquedaCheque" class="table table-bordered align-middle text-start tabla-gestion">
