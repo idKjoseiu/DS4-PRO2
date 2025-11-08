@@ -461,7 +461,6 @@ body.login-pagina {
   position: relative;
   display: flex;
   flex-wrap: wrap;
-  display: flex; /* Asegura que el contenedor se comporte como flex item */
   border-radius: 0.5rem;
   background-color: var(--menu-fondo);
   box-sizing: border-box;
