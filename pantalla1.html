@@ -63,49 +63,53 @@
             <div class="contenedor">
                 <div class="headC">Conciliación Bancaria</div>
                 <hr>
-                <form action="" class="formulario">
+                <div class="formulario">
 
                 <!-- primera fila: mes y año -->
-                    <div class="row mb-3">
-                        <div class="col-md-3">
-                            <label for="mes" class="form-label">Mes</label>
-                            <select id="mes" class="form-select" name="mes">
-                                <option value="01">Enero</option>
-                                <option value="02">Febrero</option>
-                                <option value="03">Marzo</option>
-                                <option value="04">Abril</option>
-                                <option value="05">Mayo</option>
-                                <option value="06">Junio</option>
-                                <option value="07">Julio</option>
-                                <option value="08">Agosto</option>
-                                <option value="09">Septiembre</option>
-                                <option value="10">Octubre</option>
-                                <option value="11">Noviembre</option>
-                                <option value="12">Diciembre</option>
-                            </select>
-                        </div>
+                    <form id="formularioConciliacion">
+                        <div class="row mb-3">
+                            <div class="col-md-3">
+                                <label for="mes" class="form-label">Mes</label>
+                                <select id="mes" class="form-select" name="mes">
+                                    <option value="" disabled selected>Seleccionar un mes</option>
+                                    <option value="01">Enero</option>
+                                    <option value="02">Febrero</option>
+                                    <option value="03">Marzo</option>
+                                    <option value="04">Abril</option>
+                                    <option value="05">Mayo</option>
+                                    <option value="06">Junio</option>
+                                    <option value="07">Julio</option>
+                                    <option value="08">Agosto</option>
+                                    <option value="09">Septiembre</option>
+                                    <option value="10">Octubre</option>
+                                    <option value="11">Noviembre</option>
+                                    <option value="12">Diciembre</option>
+                                </select required>
+                            </div>
 
-                        <div class="col-md-3">
-                            <label for="anio" class="form-label">Año</label>
-                            <input id="anio" name="anio" type="number" min="2000" max="2030" step="1" placeholder="2025"
-                            style="height:40px;">
-                        </div>
+                            <div class="col-md-3">
+                                <label for="anio" class="form-label">Año</label>
+                                <input id="anio" name="anio" type="text" placeholder="Ej: 3025" style="height:40px;"
+                                oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                                maxlength="4" inputmode="numeric" required>
+                            </div>
 
-                        <div class="col-md-3 d-flex align-items-center">
-                            <button type="submit" class="btn btn-success w-100">Realizar Conciliación</button>
+                            <div class="col-md-3 d-flex align-items-center">
+                                <button type="submit" class="btn btn-success w-100">Realizar Conciliación</button>
+                            </div>
+                            <hr>
                         </div>
-                        <hr>
-                    </div>
+                    </form>
 
                     <!-- seccion saldo segun libro al  -->
                     <div class="table-responsive">
                         <table class="table table-bordered align-middle text-start tabla-conciliacion">
                             <tbody>
                                 <tr class="fila-titulo">
-                                    <td> <strong>SALDO SEGÚN LIBRO AL </strong></td>
+                                    <td> <strong>SALDO SEGÚN LIBRO AL <span id="fechaSaldoLibro"></span></strong></td>
                                     <td></td>
-                                    <td>                                       
-                                        <input type="text" class="inputEnTabla" value="$ 0.00" id="saldoLibro" name="saldoLibro" readonly>                                        
+                                    <td>
+                                        <input type="text" class="inputEnTabla" value="$ 0.00" id="saldoLibro" name="saldoLibro" data-valor="0" readonly>
                                     </td>
                                 </tr>
                                 <tr>
@@ -123,17 +127,10 @@
                                     <td></td>
                                 </tr>
                                 <tr>
+                                    <td class="text-center pe-3">Subtotal</td>
                                     <td></td>
-                                    <td class="text-end pe-3">Subtotal</td>
                                     <td>
                                         <input type="text" class="inputEnTabla subtotal" value="$ 0.00" name="subtotal1" readonly>
-                                    </td>
-                                </tr>
-                                <tr class="fila-subtotal">
-                                    <td><strong>SUBTOTAL</strong></td>
-                                    <td></td>
-                                    <td>
-                                        <input type="text" class="inputEnTabla" value="$ 0.00" id="subtotalLibros" name="subtotalLibros" readonly>
                                     </td>
                                 </tr>
                                 <tr>
@@ -143,15 +140,8 @@
                                     </td>
                                     <td></td>
                                 </tr>
-                                <tr>
-                                    <td></td>
-                                    <td class="text-end pe-3">Subtotal</td>
-                                    <td>
-                                        <input type="text" class="inputEnTabla subtotal" value="$ 0.00" name="subtotal2" readonly>
-                                    </td>
-                                </tr>
                                 <tr class="fila-total">
-                                    <td><strong>SALDO CONCILIADO SEGÚN LIBROS AL</strong></td>
+                                    <td><strong>SALDO CONCILIADO SEGÚN LIBROS AL <span id="fechaSaldoConciliadoLibros"></span></strong></td>
                                     <td></td>
                                     <td>
                                         <input type="text" class="inputEnTabla" value="$ 0.00" id="saldoConciliado" name="saldoConciliado" readonly>
@@ -164,10 +154,11 @@
                         <table class="table table-bordered table-sm align-middle text-start tabla-conciliacion mt-4">
                             <tbody>
                             <tr class="fila-titulo">
-                                <td><strong>SALDO EN BANCO AL</strong></td>
+                                <td><strong>SALDO EN BANCO AL <span id="fechaSaldoBanco"></span></strong></td>
                                 <td></td>
                                 <td>
-                                    <input style= "border-bottom: 2px solid #9b9b9b;" type="text" class="form-control inputEnTabla" value="$ 0.00" id="saldoBanco" name="saldoBanco">
+                                    <input style= "border-bottom: 2px solid #9b9b9b;" type="text" class="form-control inputEnTabla" value="$ 0.00" id="saldoBanco" name="saldoBanco"
+                                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1')" inputmode="numeric">
                                 </td>
                             </tr>
                             <tr>
@@ -185,14 +176,14 @@
                                 <td></td>
                             </tr>
                             <tr>
-                                <td></td>
-                                <td class="text-end pe-3">Subtotal</td>
+                                <td class="text-center pe-3">Subtotal</td>
+                                <td></td>                         
                                 <td>
                                     <input type="text" class="inputEnTabla subtotal" value="$ 0.00" name="subtotal3" readonly>
                                 </td>
                             </tr>
                             <tr class="fila-total">
-                                <td><strong>SALDO CONCILIADO SEGÚN BANCO AL</strong></td>
+                                <td><strong>SALDO CONCILIADO SEGÚN BANCO AL <span id="fechaSaldoConciliadoBancoLabel"></span></strong></td>
                                 <td></td>
                                 <td>
                                     <input type="text" class="inputEnTabla" value="$ 0.00" id="saldoConciliadoBanco" name="saldoConciliadoBanco" readonly>
@@ -202,15 +193,18 @@
                         </table>
                     </div>
 
-
+                </div>
             </div>
         </main>
     </div>
     <!-- verificar sesion activa -->
     <script src="js/Sesion.js"></script>
-    
+
     <!-- Script para la funcionalidad del menú (hamburguesa) -->
     <script src="js/main.js"></script>
+
+    <!-- Script para la conciliación bancaria -->
+    <script src="js/conciliacion.js"></script>
 
 </body>
 </html>

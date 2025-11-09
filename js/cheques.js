@@ -214,10 +214,10 @@ document.addEventListener('DOMContentLoaded', function() {
                                 <button class="btn btn-info btn-sm d-flex align-items-center justify-content-center" title="Ver Detalles">
                                     <span class="material-icons">visibility</span>
                                 </button>
-                                <button type="button" class="btn btn-warning btn-sm d-flex align-items-center justify-content-center" title="Sacar de Circulación" data-bs-toggle="modal" data-bs-target="#modalSacarCirculacion" style="display: ${esEmitido ? 'flex' : 'none'};">
+                                <button type="button" class="btn btn-warning btn-sm d-flex align-items-center justify-content-center btn-sacar-circulacion" title="Sacar de Circulación" data-bs-toggle="modal" data-bs-target="#modalSacarCirculacion" style="display: ${esEmitido ? 'flex' : 'none'};">
                                     <span class="material-icons">remove_circle</span>
                                 </button>
-                                <button class="btn btn-danger btn-sm d-flex align-items-center justify-content-center" title="Anular Cheque" data-bs-toggle="modal" data-bs-target="#modalAnular" style="display: ${esEmitido ? 'flex' : 'none'};">
+                                <button type="button" class="btn btn-danger btn-sm d-flex align-items-center justify-content-center btn-anular" title="Anular Cheque" data-bs-toggle="modal" data-bs-target="#modalAnular" style="display: ${esEmitido ? 'flex' : 'none'};">
                                     <span class="material-icons">cancel</span>
                                 </button>
                             </div>
@@ -273,21 +273,27 @@ document.addEventListener('DOMContentLoaded', function() {
         const alertaGestion = document.getElementById('alertaGestion');
         const MSGGestion = document.getElementById('MSGGestion');
 
+        let chequeSeleccionado = null; // Variable para guardar la info del cheque
+
         // Al mostrarse el modal, pre-rellenamos la fecha actual.
-        modalSacarCirculacion.addEventListener('show.bs.modal', function () {
+        modalSacarCirculacion.addEventListener('show.bs.modal', function (event) {
+            // Capturamos el botón que disparó el modal
+            const boton = event.relatedTarget;
+            const fila = boton.closest('tr');
+            chequeSeleccionado = {
+                numero: fila.querySelector('.resNumCheque').value
+            };
+
             const fechaInput = document.getElementById('fechaFueraCirculacion');
             const hoy = new Date().toISOString().split('T')[0]; // Formato YYYY-MM-DD
             fechaInput.value = hoy;
         });
 
         // Al enviar el formulario del modal
-        document.getElementById('formSacarCirculacion').addEventListener('submit', function(e) {
+        document.getElementById('formSacarCirculacion').addEventListener('submit', function (e) {
             e.preventDefault(); // Evitamos el envío tradicional del formulario
 
-            // Recopilamos los datos directamente de la tabla de resultados
-            const numeroCheque = document.getElementById('resNumCheque').value;
-
-            // Recopilamos los datos del modal
+            const numeroCheque = chequeSeleccionado ? chequeSeleccionado.numero : null;
             const fechaFueraCirculacion = document.getElementById('fechaFueraCirculacion').value;
             const detalles = document.getElementById('detallesSacarCirculacion').value;
 
@@ -372,22 +378,30 @@ document.addEventListener('DOMContentLoaded', function() {
         const alertaGestion = document.getElementById('alertaGestion');
         const MSGGestion = document.getElementById('MSGGestion');
 
+        let chequeParaAnular = null; // Variable para guardar la info del cheque
 
         // Al mostrarse el modal, pre-rellenamos la fecha de emisión y la fecha actual para la anulación.
-        modalAnular.addEventListener('show.bs.modal', function () {
-            // 1. Obtener valores de la tabla de resultados
-            const fechaEmisionDesdeTabla = document.getElementById('resFecha').value;
-            const montoDesdeTabla = document.getElementById('resMonto').value;
+        modalAnular.addEventListener('show.bs.modal', function (event) {
+            // 1. Capturar el botón que disparó el modal y encontrar la fila
+            const boton = event.relatedTarget;
+            const fila = boton.closest('tr');
+
+            // 2. Guardar los datos del cheque de esa fila
+            chequeParaAnular = {
+                numero: fila.querySelector('.resNumCheque').value,
+                fecha: fila.querySelector('.resFecha').value,
+                monto: fila.querySelector('.resMonto').value
+            };
             
-            // 2. Asignar la fecha de emisión al input del modal (solo lectura)
-            fechaEmisionAnularInput.value = fechaEmisionDesdeTabla;
+            // 3. Asignar la fecha de emisión al input del modal (solo lectura)
+            fechaEmisionAnularInput.value = chequeParaAnular.fecha;
 
             // 3. Establecer la fecha actual por defecto en el campo de fecha de anulación
             const hoy = new Date().toISOString().split('T')[0]; // Formato YYYY-MM-DD
             fechaAnulacionInput.value = hoy;
 
             // 4. Lógica de comparación de fechas para el monto
-            const fechaEmision = new Date(fechaEmisionDesdeTabla + 'T00:00:00'); // Añadir hora para evitar problemas de zona horaria
+            const fechaEmision = new Date(chequeParaAnular.fecha + 'T00:00:00'); // Añadir hora para evitar problemas de zona horaria
             const fechaAnulacion = new Date(hoy + 'T00:00:00');
 
             // Comparamos si el mes y el año son los mismos
@@ -401,7 +415,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             } else {
                 // Si es un mes diferente, se usa el monto original del cheque
-                montoAnularInput.value = montoDesdeTabla;
+                montoAnularInput.value = chequeParaAnular.monto;
                 mensajeMontoAnular.textContent = "Anulado en un mes posterior a la emisión.";
                 mensajeMontoAnular.style.color = 'orange'; // Opcional: estilo visual
             }
@@ -414,13 +428,18 @@ document.addEventListener('DOMContentLoaded', function() {
                 e.preventDefault(); // Evitamos el envío tradicional del formulario
 
                 // 1. Recolectar datos
-                const numeroCheque = document.getElementById('resNumCheque').value;
+                const numeroCheque = chequeParaAnular ? chequeParaAnular.numero : null;
                 const fechaAnulacion = fechaAnulacionInput.value;
                 const motivoAnulacion = document.getElementById('detallesAnulacion').value;
                 const montoAnular = montoAnularInput.value; // Ya está en el formulario
 
                 if (!fechaAnulacion) {
                     alert("Por favor, especifique la fecha de anulación.");
+                    return;
+                }
+                if (!numeroCheque) {
+                    // Ocultar modal y mostrar error
+                    console.error("No se pudo obtener el número de cheque.");
                     return;
                 }
 
