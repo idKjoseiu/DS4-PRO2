@@ -107,7 +107,7 @@
         rs.close();
         pstmt.close();
 
-        //depositos en trnasito----------
+        /*depositos en trnasito----------
         String sqlDepositoTransito = "SELECT COALESCE(SUM(Monto), 0) FROM depositos";
         pstmt = conn.prepareStatement(sqlDepositoTransito);
         rs = pstmt.executeQuery();
@@ -115,7 +115,9 @@
             resultados.put("depositoTransito", rs.getDouble(1));
         }
         rs.close();
-        pstmt.close();
+        pstmt.close();*/
+        resultados.put("depositoTransito", 0.0);
+
 
         // --- Consulta para Cheques en Circulación ---
         // Suma el monto de todos los cheques en la tabla 'cheques'.

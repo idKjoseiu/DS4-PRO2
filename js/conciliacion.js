@@ -143,10 +143,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 document.getElementById('chequesAnulados').value = formatearMoneda(data.chequesAnulados);
                 document.getElementById('chequesAnulados').dataset.valor = data.chequesAnulados;
 
-                document.getElementById('chequesGirados').value = formatearMoneda(data.chequesGirados);
+                 document.getElementById('chequesGirados').value = formatearMoneda(data.chequesGirados);
+                // document.getElementById('chequesGirados').value = formatearMoneda(0);
                 document.getElementById('chequesGirados').dataset.valor = data.chequesGirados;
 
-                document.getElementById('depositoTransito').value = formatearMoneda(data.depositoTransito);
+                // document.getElementById('depositoTransito').value = formatearMoneda(data.depositoTransito);
+                document.getElementById('depositoTransito').value = formatearMoneda(0);
+
                 document.getElementById('depositoTransito').dataset.valor = data.depositoTransito;
 
                 document.getElementById('chequesCirculacion').value = formatearMoneda(data.chequesCirculacion);
